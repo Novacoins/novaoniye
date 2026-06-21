@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
-import portrait from "@/assets/oniye-portrait.jpg";
+import portraitAsset from "@/assets/oniye-portrait.png.asset.json";
+const portrait = portraitAsset.url;
 
 export function Hero() {
   return (
