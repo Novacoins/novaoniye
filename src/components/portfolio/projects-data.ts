@@ -89,6 +89,16 @@ export const projects: Project[] = [
       "Beautiful, distraction-free UI",
     ],
     technologies: ["Flutter", "Dart", "Firebase", "Google Play Services", "AdMob"],
+    platform: "Android",
+    category: "Game",
+    version: "8.2",
+    stats: [
+      { label: "Total Users", value: "25K+" },
+      { label: "Downloads", value: "50K+" },
+      { label: "App Rating", value: "4.8★" },
+      { label: "Levels", value: "200+" },
+    ],
+    process: defaultProcess,
     challenges: [
       {
         title: "Smooth performance at scale",
@@ -125,6 +135,16 @@ export const projects: Project[] = [
       "Optimized for buttery-smooth animation",
     ],
     technologies: ["Flutter", "Dart", "Firebase", "Cloud Functions", "AdMob"],
+    platform: "Android",
+    category: "Game",
+    version: "8.2",
+    stats: [
+      { label: "Total Users", value: "40K+" },
+      { label: "Downloads", value: "80K+" },
+      { label: "App Rating", value: "4.7★" },
+      { label: "Daily Spins", value: "1M+" },
+    ],
+    process: defaultProcess,
     challenges: [
       {
         title: "Provably-fair spin engine",
@@ -161,6 +181,16 @@ export const projects: Project[] = [
       "Premium dark UI with gold accents",
     ],
     technologies: ["Flutter", "Dart", "Firebase", "Game Services", "AdMob"],
+    platform: "Android",
+    category: "Game",
+    version: "8.2",
+    stats: [
+      { label: "Total Users", value: "60K+" },
+      { label: "Downloads", value: "120K+" },
+      { label: "App Rating", value: "4.9★" },
+      { label: "Mini-Games", value: "25+" },
+    ],
+    process: defaultProcess,
     challenges: [
       {
         title: "Modular game architecture",
