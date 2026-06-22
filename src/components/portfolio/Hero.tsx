@@ -30,7 +30,12 @@ export function Hero() {
             apps & websites.
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
+          <p className="mt-6 max-w-xl text-base font-medium leading-relaxed text-foreground/90 md:text-lg">
+            I build modern apps and websites that drive businesses forward,
+            engage users, and elevate experiences.
+          </p>
+
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
             I'm <span className="text-foreground">Oniye Taofiq Ishola</span> — a
             mobile app developer, web developer, and digital entrepreneur with
             5+ years crafting premium, business-focused digital products that
