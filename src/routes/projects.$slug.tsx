@@ -65,7 +65,7 @@ const statusStyles: Record<string, string> = {
 };
 
 function ProjectPage() {
-  const { project: p } = Route.useLoaderData();
+  const { project: p } = Route.useLoaderData() as { project: Project };
 
   return (
     <main className="relative min-h-screen bg-background text-foreground grain">
