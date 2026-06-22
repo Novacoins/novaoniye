@@ -32,6 +32,9 @@ const u = (a: { url: string }) => a.url;
 
 export type ProjectStatus = "Live" | "Beta" | "Completed";
 
+export type ProjectStat = { label: string; value: string };
+export type ProcessStep = { title: string; body: string };
+
 export type Project = {
   slug: string;
   title: string;
@@ -40,15 +43,29 @@ export type Project = {
   short: string;
   overview: string;
   status: ProjectStatus;
+  platform: string;
+  category: string;
+  version: string;
   image: string;
   screenshots: string[];
   features: string[];
   technologies: string[];
+  stats: ProjectStat[];
+  process: ProcessStep[];
   challenges: { title: string; body: string }[];
   liveDemo?: string;
   website?: string;
   download?: string;
 };
+
+const defaultProcess: ProcessStep[] = [
+  { title: "Ideation", body: "Discovery, market research, and product framing to lock the core value proposition." },
+  { title: "Design", body: "Wireframes, UX flows, and a premium UI system with motion, color, and brand alignment." },
+  { title: "Development", body: "Clean, modular code with reusable components, performant rendering, and scalable architecture." },
+  { title: "Testing", body: "Manual QA, device testing, and automated checks across screen sizes and OS versions." },
+  { title: "Deployment", body: "Play Store release, monitoring, crash reporting, and analytics wiring from day one." },
+  { title: "Iteration", body: "Data-driven updates, A/B tested features, and continuous polish based on user behavior." },
+];
 
 export const projects: Project[] = [
   {
