@@ -171,6 +171,43 @@ function ProjectPage() {
         </div>
       </section>
 
+      {/* Project Details */}
+      <section className="mx-auto max-w-7xl px-6 pt-4">
+        <div className="grid grid-cols-2 gap-3 rounded-3xl border border-gold/20 bg-surface/60 p-5 sm:grid-cols-4">
+          {[
+            { label: "Platform", value: p.platform },
+            { label: "Category", value: p.category },
+            { label: "Version", value: p.version },
+            { label: "Status", value: p.status },
+          ].map((d) => (
+            <div key={d.label} className="text-center">
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{d.label}</div>
+              <div className="mt-1 font-display text-lg text-gold-gradient">{d.value}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Project Statistics */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeading kicker="Impact" title="Project Statistics" />
+        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {p.stats.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="rounded-2xl border border-border bg-surface/60 p-6 text-center transition-all hover:border-gold/40 hover:gold-glow"
+            >
+              <div className="font-display text-4xl text-gold-gradient">{s.value}</div>
+              <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">{s.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Screenshots gallery */}
       <section className="mx-auto max-w-7xl px-6 py-16">
         <SectionHeading kicker="Gallery" title="App Screenshots" />
@@ -265,7 +302,27 @@ function ProjectPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Developer Process */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeading kicker="Workflow" title="Developer Process" />
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {p.process.map((s, i) => (
+            <motion.div
+              key={s.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="relative rounded-2xl border border-border bg-surface/60 p-6 transition-all hover:border-gold/40"
+            >
+              <div className="font-display text-3xl text-gold/70">0{i + 1}</div>
+              <h3 className="mt-2 font-display text-xl">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="relative overflow-hidden rounded-3xl border border-gold/30 bg-surface/60 p-10 text-center md:p-16">
           <div className="absolute -inset-20 -z-10 bg-gold/10 blur-3xl" />

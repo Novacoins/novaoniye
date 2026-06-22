@@ -82,8 +82,9 @@ export function Portfolio() {
               </Link>
 
               <div className="flex flex-1 flex-col p-6">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {p.cat}
+                <div className="flex items-center justify-between text-xs uppercase tracking-widest text-muted-foreground">
+                  <span>{p.cat}</span>
+                  <span className="text-gold/80">v{p.version} · {p.platform}</span>
                 </div>
                 <div className="mt-2 flex items-start justify-between gap-3">
                   <h3 className="font-display text-2xl">{p.title}</h3>
@@ -92,6 +93,16 @@ export function Portfolio() {
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
                   {p.short}
                 </p>
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {p.technologies.slice(0, 4).map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-gold/20 bg-gold/5 px-2.5 py-0.5 text-[10px] tracking-wide text-foreground/80"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
                 <Link
                   to="/projects/$slug"
                   params={{ slug: p.slug }}
