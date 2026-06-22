@@ -1,12 +1,34 @@
-import novaMemory1 from "@/assets/nova-memory-1.jpg";
-import novaMemory2 from "@/assets/nova-memory-2.jpg";
-import novaMemory3 from "@/assets/nova-memory-3.jpg";
-import novaSpin1 from "@/assets/nova-spin-1.jpg";
-import novaSpin2 from "@/assets/nova-spin-2.jpg";
-import novaSpin3 from "@/assets/nova-spin-3.jpg";
-import novaPlay1 from "@/assets/nova-play-1.jpg";
-import novaPlay2 from "@/assets/nova-play-2.jpg";
-import novaPlay3 from "@/assets/nova-play-3.jpg";
+import mCover from "@/assets/user-projects/nova-memory-cover.png.asset.json";
+import mS1 from "@/assets/user-projects/nova-memory-1.png.asset.json";
+import mS2 from "@/assets/user-projects/nova-memory-2.png.asset.json";
+import mS3 from "@/assets/user-projects/nova-memory-3.png.asset.json";
+import mS4 from "@/assets/user-projects/nova-memory-4.png.asset.json";
+import mS5 from "@/assets/user-projects/nova-memory-5.jpg.asset.json";
+
+import sCover from "@/assets/user-projects/nova-spin-cover.png.asset.json";
+import sS1 from "@/assets/user-projects/nova-spin-1.png.asset.json";
+import sS2 from "@/assets/user-projects/nova-spin-2.png.asset.json";
+import sS3 from "@/assets/user-projects/nova-spin-3.png.asset.json";
+import sS4 from "@/assets/user-projects/nova-spin-4.png.asset.json";
+import sS5 from "@/assets/user-projects/nova-spin-5.png.asset.json";
+import sS6 from "@/assets/user-projects/nova-spin-6.png.asset.json";
+import sS7 from "@/assets/user-projects/nova-spin-7.png.asset.json";
+import sS8 from "@/assets/user-projects/nova-spin-8.png.asset.json";
+import sS9 from "@/assets/user-projects/nova-spin-9.jpg.asset.json";
+import sS10 from "@/assets/user-projects/nova-spin-10.png.asset.json";
+import sS11 from "@/assets/user-projects/nova-spin-11.png.asset.json";
+
+import pCover from "@/assets/user-projects/nova-play-cover.png.asset.json";
+import pS1 from "@/assets/user-projects/nova-play-1.png.asset.json";
+import pS2 from "@/assets/user-projects/nova-play-2.png.asset.json";
+import pS3 from "@/assets/user-projects/nova-play-3.png.asset.json";
+import pS4 from "@/assets/user-projects/nova-play-4.png.asset.json";
+import pS5 from "@/assets/user-projects/nova-play-5.png.asset.json";
+import pS6 from "@/assets/user-projects/nova-play-6.png.asset.json";
+import pS7 from "@/assets/user-projects/nova-play-7.png.asset.json";
+import pS8 from "@/assets/user-projects/nova-play-8.png.asset.json";
+
+const u = (a: { url: string }) => a.url;
 
 export type ProjectStatus = "Live" | "Beta" | "Completed";
 
@@ -35,11 +57,12 @@ export const projects: Project[] = [
     cat: "Educational Apps",
     tag: "Launched",
     status: "Live",
-    short: "Brain training & memory challenge with emoji matching, quizzes, and hundreds of levels.",
+    short:
+      "Brain training & memory challenge with emoji matching, quizzes, and hundreds of levels.",
     overview:
       "Nova Memory is a fun and educational memory training application featuring emoji matching, quizzes, and hundreds of levels designed to improve focus, memory, and cognitive skills. Built for daily engagement with a polished, premium interface, smooth progression curves, and reward loops that keep users coming back.",
-    image: novaMemory1,
-    screenshots: [novaMemory1, novaMemory2, novaMemory3],
+    image: u(mCover),
+    screenshots: [u(mS1), u(mS2), u(mS3), u(mS4), u(mS5)],
     features: [
       "Hundreds of progressive memory levels",
       "Emoji matching mini-games",
@@ -67,11 +90,15 @@ export const projects: Project[] = [
     cat: "Mobile Apps",
     tag: "Live",
     status: "Live",
-    short: "Interactive rewards & spin experience with achievements, in-app rewards, and social sharing.",
+    short:
+      "Interactive rewards & spin experience with achievements, in-app rewards, and social sharing.",
     overview:
       "Nova Spin is an engaging spin-based mobile application where users enjoy interactive gameplay, unlock achievements, earn in-app rewards, and share their progress with friends. The product blends premium visual polish with addictive gameplay loops and a frictionless reward system.",
-    image: novaSpin1,
-    screenshots: [novaSpin1, novaSpin2, novaSpin3],
+    image: u(sCover),
+    screenshots: [
+      u(sS1), u(sS2), u(sS3), u(sS4), u(sS5), u(sS6),
+      u(sS7), u(sS8), u(sS9), u(sS10), u(sS11),
+    ],
     features: [
       "Animated spin wheel with prize mechanics",
       "Achievements & unlockable badges",
@@ -99,11 +126,15 @@ export const projects: Project[] = [
     cat: "Mobile Apps",
     tag: "Flagship",
     status: "Live",
-    short: "All-in-one entertainment platform with mini games, puzzles, and challenges.",
+    short:
+      "All-in-one entertainment platform with mini games, puzzles, and challenges.",
     overview:
       "Nova Play is a feature-rich mobile gaming app offering a collection of fun mini-games, puzzles, and challenges designed to deliver engaging entertainment and a smooth user experience. A modular launcher architecture makes it easy to ship new games without compromising the core experience.",
-    image: novaPlay1,
-    screenshots: [novaPlay1, novaPlay2, novaPlay3],
+    image: u(pCover),
+    screenshots: [
+      u(pS1), u(pS2), u(pS3), u(pS4),
+      u(pS5), u(pS6), u(pS7), u(pS8),
+    ],
     features: [
       "Curated library of mini-games",
       "Puzzles, arcade and challenge modes",
