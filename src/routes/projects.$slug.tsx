@@ -302,7 +302,27 @@ function ProjectPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Developer Process */}
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <SectionHeading kicker="Workflow" title="Developer Process" />
+        <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {p.process.map((s, i) => (
+            <motion.div
+              key={s.title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="relative rounded-2xl border border-border bg-surface/60 p-6 transition-all hover:border-gold/40"
+            >
+              <div className="font-display text-3xl text-gold/70">0{i + 1}</div>
+              <h3 className="mt-2 font-display text-xl">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div className="relative overflow-hidden rounded-3xl border border-gold/30 bg-surface/60 p-10 text-center md:p-16">
           <div className="absolute -inset-20 -z-10 bg-gold/10 blur-3xl" />
