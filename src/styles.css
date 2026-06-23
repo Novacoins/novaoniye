@@ -134,6 +134,11 @@
   animation: shimmer 3s linear infinite;
 }
 
+@keyframes gold-border-sweep {
+  0% { background-position: 0% 50% }
+  100% { background-position: 200% 50% }
+}
+
 /* Grain texture overlay */
 .grain::before {
   content: "";
