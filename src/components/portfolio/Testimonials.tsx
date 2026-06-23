@@ -1,31 +1,43 @@
 import { motion } from "motion/react";
 import { Quote, Star } from "lucide-react";
 import { SectionLabel } from "./About";
+import t1 from "@/assets/testimonial-1.jpg";
+import t2 from "@/assets/testimonial-2.jpg";
+import t3 from "@/assets/testimonial-3.jpg";
+import t4 from "@/assets/testimonial-4.jpg";
 
 const reviews = [
   {
-    name: "Adaobi N.",
-    role: "Founder, RetailHub NG",
+    name: "Marcus Johnson",
+    role: "Founder & CEO",
+    company: "Northwind Labs · USA",
+    image: t1,
     quote:
-      "Oniye delivered our e-commerce platform ahead of schedule with quality that exceeded our expectations. A true professional.",
+      "Exceptional mobile app development. Oniye delivered a polished product ahead of schedule and elevated every detail of the experience.",
   },
   {
-    name: "Daniel K.",
-    role: "CEO, EduSpark",
+    name: "Sophie Bennett",
+    role: "Startup Owner",
+    company: "Lumen Studio · UK",
+    image: t2,
     quote:
-      "Our learning app would not exist without him. Clean code, beautiful UI, and clear communication throughout.",
+      "Outstanding communication and technical expertise. He transformed our idea into a beautiful, production-ready application.",
   },
   {
-    name: "Mariam O.",
-    role: "Director, BookEase",
+    name: "Rajesh Patel",
+    role: "Business Manager",
+    company: "Meridian Group · Canada",
+    image: t3,
     quote:
-      "From concept to launch he handled everything with poise. The booking system runs flawlessly. Highly recommended.",
+      "Professional, reliable, and extremely talented. Our platform launched flawlessly and our users love it.",
   },
   {
-    name: "Tunde A.",
-    role: "Crypto Project Lead",
+    name: "Mia Chen",
+    role: "Product Designer",
+    company: "Form & Function · USA",
+    image: t4,
     quote:
-      "Crypto Mining Tycoon turned out incredible. Oniye understood the vision and shipped a polished product.",
+      "A rare blend of design sensitivity and engineering craft. Every pixel and interaction shipped exactly as envisioned.",
   },
 ];
 
@@ -47,11 +59,11 @@ export function Testimonials() {
           {reviews.map((r, i) => (
             <motion.figure
               key={r.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="relative rounded-3xl glass-panel p-8 md:p-10"
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: "easeOut" }}
+              className="group relative rounded-3xl glass-panel p-8 transition-all duration-500 hover:-translate-y-1 hover:gold-glow md:p-10"
             >
               <Quote className="absolute right-8 top-8 h-10 w-10 text-gold/20" />
               <div className="flex gap-1 text-gold">
@@ -63,13 +75,21 @@ export function Testimonials() {
                 "{r.quote}"
               </blockquote>
               <figcaption className="mt-8 flex items-center gap-4 border-t border-border pt-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/30 bg-gold/10 font-display text-lg text-gold">
-                  {r.name[0]}
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-2 ring-gold/40 ring-offset-2 ring-offset-background">
+                  <img
+                    src={r.image}
+                    alt={`${r.name} headshot`}
+                    width={512}
+                    height={512}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div>
                   <div className="font-medium text-foreground">{r.name}</div>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                    {r.role}
+                  <div className="text-xs text-gold/90">{r.role}</div>
+                  <div className="text-[11px] uppercase tracking-widest text-muted-foreground">
+                    {r.company}
                   </div>
                 </div>
               </figcaption>

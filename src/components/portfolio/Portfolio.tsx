@@ -57,7 +57,8 @@ export function Portfolio() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
-              className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-surface/60 transition-all hover:border-gold/40 hover:gold-glow"
+              whileHover={{ y: -8 }}
+              className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-surface/60 transition-all duration-500 hover:border-gold/60 hover:gold-glow"
             >
               <Link
                 to="/projects/$slug"
