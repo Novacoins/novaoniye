@@ -118,6 +118,25 @@ export function Hero() {
           transition={{ duration: 0.8 }}
           className="relative z-10"
         >
+          <div className="mb-6 flex items-center gap-4">
+            <div className="relative">
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-gold via-[#ffe9a0] to-gold opacity-75 blur-sm animate-pulse" />
+              <img
+                src={profilePicture}
+                alt="Oniye Taofiq Ishola"
+                className="relative h-20 w-20 rounded-full border-2 border-gold/50 object-cover shadow-2xl"
+              />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">
+                Oniye Taofiq Ishola
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Founder, NovaPlay Technologies
+              </div>
+            </div>
+          </div>
+
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/5 px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-gold">
             <Sparkles className="h-3 w-3" /> Founder · NovaPlay Technologies
           </div>
