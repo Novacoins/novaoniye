@@ -8,8 +8,13 @@ import {
   Volume2,
   VolumeX,
   Sparkles,
+  Code2,
+  GitBranch,
+  Cpu,
+  Wifi,
 } from "lucide-react";
 import { projects } from "./projects-data";
+import workspaceAsset from "@/assets/workspace-realistic.jpg.asset.json";
 
 /* ---------------- Sound (WebAudio synthesized) ---------------- */
 function useSfx(enabled: boolean) {
@@ -29,12 +34,11 @@ function useSfx(enabled: boolean) {
     if (!Ctx) return;
     const ctx = ctxRef.current ?? new Ctx();
     ctxRef.current = ctx;
-    // soft ambience (low pad)
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.type = "sine";
-    o.frequency.value = 110;
-    g.gain.value = 0.012;
+    o.frequency.value = 90;
+    g.gain.value = 0.008;
     o.connect(g).connect(ctx.destination);
     o.start();
     ambientRef.current = {
@@ -67,285 +71,80 @@ function useSfx(enabled: boolean) {
     o.stop(ctx.currentTime + dur);
   };
 
+  // realistic mechanical key — short noise burst + click tone
+  const key = () => {
+    if (!enabled) return;
+    const ctx = ctxRef.current;
+    if (!ctx) return;
+    // click
+    ping(1800 + Math.random() * 400, 0.012, "square", 0.025);
+    // thock
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "triangle";
+    o.frequency.value = 180 + Math.random() * 60;
+    g.gain.setValueAtTime(0.04, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
+    o.connect(g).connect(ctx.destination);
+    o.start();
+    o.stop(ctx.currentTime + 0.06);
+  };
+
   return {
-    key: () => ping(380 + Math.random() * 240, 0.04, "square", 0.035),
+    key,
     notify: () => {
-      ping(880, 0.12, "sine", 0.06);
-      setTimeout(() => ping(1320, 0.16, "sine", 0.05), 110);
+      ping(880, 0.12, "sine", 0.05);
+      setTimeout(() => ping(1320, 0.16, "sine", 0.045), 110);
     },
-    reply: () => ping(660, 0.18, "triangle", 0.05),
+    reply: () => ping(660, 0.18, "triangle", 0.045),
   };
 }
 
-/* ---------------- Animated developer SVG ---------------- */
-function DeveloperScene({
-  active,
-  onType,
-}: {
-  active: boolean;
-  onType: () => void;
-}) {
-  const [codeOffset, setCodeOffset] = useState(0);
-  const [pose, setPose] = useState<"work" | "stretch" | "tired" | "stand">("work");
+/* ---------------- Live code stream ---------------- */
+const CODE_LINES = [
+  { c: "hsl(280 70% 70%)", t: "import" }, { c: "#e5e7eb", t: " { motion } " },
+  { c: "hsl(280 70% 70%)", t: "from" }, { c: "hsl(160 70% 60%)", t: " 'framer-motion'" },
+  { c: "#e5e7eb", t: ";" },
+];
+const SNIPPETS = [
+  `export async function deploy() {`,
+  `  const build = await pipeline.run();`,
+  `  if (build.ok) ship(build.artifact);`,
+  `}`,
+  `const user = await db.users.find(id);`,
+  `return <Hero data={user} />;`,
+  `// optimizing bundle...`,
+  `tree.shake(); minify(); compress();`,
+  `app.listen(3000, () => log('ready'));`,
+];
 
-  // typing tick → scroll code + sfx
+function CodeStream({ active }: { active: boolean }) {
+  const [lines, setLines] = useState<string[]>(SNIPPETS.slice(0, 6));
   useEffect(() => {
     if (!active) return;
     const id = window.setInterval(() => {
-      setCodeOffset((o) => (o + 14) % 280);
-      onType();
-    }, 220);
+      setLines((prev) => {
+        const next = [...prev.slice(1), SNIPPETS[Math.floor(Math.random() * SNIPPETS.length)]];
+        return next;
+      });
+    }, 900);
     return () => window.clearInterval(id);
-  }, [active, onType]);
-
-  // pose cycle
-  useEffect(() => {
-    if (!active) return;
-    let timer: number;
-    const cycle = () => {
-      const r = Math.random();
-      const next: typeof pose =
-        r < 0.55 ? "work" : r < 0.75 ? "stretch" : r < 0.9 ? "tired" : "stand";
-      setPose(next);
-      timer = window.setTimeout(cycle, 4500 + Math.random() * 4000);
-    };
-    timer = window.setTimeout(cycle, 5000);
-    return () => window.clearTimeout(timer);
   }, [active]);
-
-  const armAnim =
-    pose === "stretch"
-      ? { rotate: [-8, -60, -8], y: [0, -6, 0] }
-      : pose === "tired"
-      ? { rotate: [-6, -2, -6], y: [0, 1, 0] }
-      : pose === "stand"
-      ? { rotate: [-10, -10, -10], y: [-8, -8, -8] }
-      : { rotate: [-8, -16, -8], y: [0, -2, 0] };
-
-  const headAnim =
-    pose === "tired"
-      ? { rotate: [0, 8, 0], y: [0, 3, 0] }
-      : pose === "stretch"
-      ? { rotate: [0, -10, 0], y: [0, -4, 0] }
-      : { rotate: [-4, 4, -4] };
-
-  const bodyY = pose === "stand" ? -16 : 0;
-
   return (
-    <svg
-      viewBox="0 0 600 380"
-      className="h-full w-full"
-      role="img"
-      aria-label="Animated developer at workspace"
-    >
-      <defs>
-        <linearGradient id="screen" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#0b0f1a" />
-          <stop offset="1" stopColor="#0a0a0a" />
-        </linearGradient>
-        <linearGradient id="gold" x1="0" x2="1">
-          <stop offset="0" stopColor="hsl(45 90% 55%)" />
-          <stop offset="1" stopColor="hsl(40 95% 70%)" />
-        </linearGradient>
-        <radialGradient id="lamp" cx="0.5" cy="0" r="1">
-          <stop offset="0" stopColor="hsl(45 95% 70% / 0.55)" />
-          <stop offset="1" stopColor="hsl(45 95% 70% / 0)" />
-        </radialGradient>
-        <clipPath id="mClip">
-          <rect x="155" y="70" width="160" height="100" rx="6" />
-        </clipPath>
-        <clipPath id="mClip2">
-          <rect x="335" y="80" width="140" height="90" rx="6" />
-        </clipPath>
-      </defs>
-
-      {/* lamp glow */}
-      <ellipse cx="300" cy="60" rx="260" ry="120" fill="url(#lamp)" />
-
-      {/* desk */}
-      <rect x="40" y="270" width="520" height="14" rx="3" fill="#1a1a1a" stroke="url(#gold)" strokeOpacity="0.4" />
-      <rect x="60" y="284" width="14" height="80" fill="#111" />
-      <rect x="526" y="284" width="14" height="80" fill="#111" />
-
-      {/* left monitor */}
-      <g>
-        <rect x="148" y="60" width="174" height="120" rx="10" fill="#0a0a0a" stroke="url(#gold)" strokeOpacity="0.6" />
-        <rect x="155" y="70" width="160" height="100" rx="6" fill="url(#screen)" />
-        <g clipPath="url(#mClip)">
-          <g transform={`translate(0, ${-codeOffset})`}>
-            {Array.from({ length: 26 }).map((_, i) => (
-              <g key={i} transform={`translate(162, ${82 + i * 14})`}>
-                <rect width="10" height="3" fill="hsl(45 90% 60%)" opacity="0.7" />
-                <rect x="14" width={30 + ((i * 17) % 50)} height="3" fill="#9aa3b2" opacity="0.7" />
-                <rect x={50 + ((i * 11) % 30)} width={20 + ((i * 7) % 40)} height="3" fill="hsl(160 70% 55%)" opacity="0.7" />
-              </g>
-            ))}
-          </g>
-          {/* cursor */}
-          <motion.rect
-            x="180"
-            y={82 + (((codeOffset / 14) | 0) % 6) * 14}
-            width="2"
-            height="8"
-            fill="hsl(45 90% 65%)"
-            animate={{ opacity: [1, 0, 1] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-          />
-        </g>
-        <rect x="220" y="180" width="30" height="6" rx="2" fill="#1a1a1a" />
-        <rect x="200" y="186" width="70" height="4" rx="2" fill="#1a1a1a" />
-      </g>
-
-      {/* right monitor */}
-      <g>
-        <rect x="330" y="72" width="150" height="100" rx="10" fill="#0a0a0a" stroke="url(#gold)" strokeOpacity="0.4" />
-        <rect x="335" y="80" width="140" height="90" rx="6" fill="url(#screen)" />
-        <g clipPath="url(#mClip2)">
-          {/* dashboard mock */}
-          <rect x="342" y="90" width="50" height="30" rx="3" fill="hsl(45 90% 55% / 0.18)" stroke="hsl(45 90% 55% / 0.6)" />
-          <rect x="398" y="90" width="70" height="30" rx="3" fill="#111" stroke="#222" />
-          <motion.rect
-            x="342"
-            y="128"
-            height="6"
-            rx="2"
-            fill="url(#gold)"
-            animate={{ width: [20, 120, 60, 120] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <rect x="342" y="140" width="126" height="4" rx="2" fill="#222" />
-          <rect x="342" y="150" width="90" height="4" rx="2" fill="#222" />
-        </g>
-        <rect x="392" y="172" width="26" height="6" rx="2" fill="#1a1a1a" />
-        <rect x="372" y="178" width="66" height="4" rx="2" fill="#1a1a1a" />
-      </g>
-
-      {/* laptop */}
-      <g>
-        <rect x="240" y="220" width="120" height="60" rx="4" fill="#0a0a0a" stroke="url(#gold)" strokeOpacity="0.45" />
-        <rect x="246" y="226" width="108" height="48" rx="2" fill="#0c1220" />
-        <motion.rect
-          x="250"
-          y="232"
-          width="50"
-          height="3"
-          fill="hsl(160 70% 55%)"
-          animate={{ width: [10, 90, 10] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        />
-        <rect x="225" y="278" width="150" height="6" rx="2" fill="#111" />
-      </g>
-
-      {/* keyboard + mouse */}
-      <rect x="180" y="296" width="180" height="22" rx="4" fill="#0c0c0c" stroke="url(#gold)" strokeOpacity="0.35" />
-      {Array.from({ length: 14 }).map((_, i) => (
-        <motion.rect
-          key={i}
-          x={188 + i * 12}
-          y={302}
-          width="9"
-          height="9"
-          rx="1.5"
-          fill="#1a1a1a"
-          animate={active ? { y: [302, 304, 302] } : undefined}
-          transition={{
-            duration: 0.18,
-            repeat: Infinity,
-            delay: (i * 0.07) % 0.9,
-            ease: "easeInOut",
-          }}
-        />
+    <div className="font-mono text-[9px] leading-[1.5] text-white/80">
+      {lines.map((l, i) => (
+        <motion.div
+          key={`${i}-${l}`}
+          initial={{ opacity: 0, x: -4 }}
+          animate={{ opacity: 0.85, x: 0 }}
+          transition={{ duration: 0.4 }}
+          className="truncate"
+        >
+          <span className="text-[hsl(45_90%_60%)]">{String(i + 142).padStart(3, "0")}</span>{" "}
+          <span className="text-white/70">{l}</span>
+        </motion.div>
       ))}
-      <motion.g
-        animate={active ? { x: [0, 8, -4, 0], y: [0, -2, 3, 0] } : undefined}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <rect x="380" y="300" width="24" height="32" rx="10" fill="#101010" stroke="url(#gold)" strokeOpacity="0.4" />
-      </motion.g>
-
-      {/* developer (body) */}
-      <motion.g animate={{ y: bodyY }} transition={{ type: "spring", stiffness: 80, damping: 14 }}>
-        {/* chair back */}
-        <rect x="430" y="200" width="14" height="90" rx="4" fill="#1a1a1a" />
-        <rect x="410" y="210" width="60" height="70" rx="10" fill="#161616" stroke="url(#gold)" strokeOpacity="0.3" />
-
-        {/* torso */}
-        <path
-          d="M380 250 q40 -28 80 0 l-6 50 q-34 14 -68 0 z"
-          fill="#111"
-          stroke="url(#gold)"
-          strokeOpacity="0.45"
-        />
-
-        {/* arms (animated) */}
-        <motion.g
-          style={{ originX: "445px", originY: "258px" }}
-          animate={active ? armAnim : undefined}
-          transition={{ duration: 0.45, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <path d="M438 256 q-30 28 -80 44" stroke="#1c1c1c" strokeWidth="10" fill="none" strokeLinecap="round" />
-          <circle cx="360" cy="302" r="6" fill="#e9c674" />
-        </motion.g>
-        <motion.g
-          style={{ originX: "405px", originY: "258px" }}
-          animate={active ? { ...armAnim, rotate: armAnim.rotate.map((r) => -r) } : undefined}
-          transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <path d="M408 256 q30 28 70 44" stroke="#1c1c1c" strokeWidth="10" fill="none" strokeLinecap="round" />
-          <circle cx="478" cy="302" r="6" fill="#e9c674" />
-        </motion.g>
-
-        {/* head */}
-        <motion.g
-          style={{ originX: "422px", originY: "230px" }}
-          animate={active ? headAnim : undefined}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <circle cx="422" cy="222" r="22" fill="#e9c674" />
-          {/* hair */}
-          <path d="M400 218 q22 -30 44 0 q-4 -12 -22 -14 q-18 2 -22 14 z" fill="#0d0d0d" />
-          {/* eyes */}
-          <AnimatePresence>
-            {pose !== "tired" ? (
-              <motion.g key="open">
-                <circle cx="414" cy="224" r="1.8" fill="#0a0a0a" />
-                <circle cx="430" cy="224" r="1.8" fill="#0a0a0a" />
-              </motion.g>
-            ) : (
-              <motion.g key="closed">
-                <rect x="411" y="223" width="6" height="1.4" fill="#0a0a0a" />
-                <rect x="427" y="223" width="6" height="1.4" fill="#0a0a0a" />
-              </motion.g>
-            )}
-          </AnimatePresence>
-          {/* mouth */}
-          <path
-            d={pose === "tired" ? "M416 234 q6 -2 12 0" : "M416 233 q6 3 12 0"}
-            stroke="#0a0a0a"
-            strokeWidth="1.4"
-            fill="none"
-            strokeLinecap="round"
-          />
-          {/* headphones */}
-          <path d="M398 220 q24 -28 48 0" stroke="url(#gold)" strokeWidth="2" fill="none" />
-          <rect x="395" y="218" width="6" height="12" rx="2" fill="#1a1a1a" />
-          <rect x="443" y="218" width="6" height="12" rx="2" fill="#1a1a1a" />
-        </motion.g>
-      </motion.g>
-
-      {/* lamp */}
-      <g>
-        <rect x="86" y="180" width="6" height="80" fill="#1a1a1a" />
-        <path d="M70 180 l40 0 l-10 -24 l-20 0 z" fill="#161616" stroke="url(#gold)" strokeOpacity="0.5" />
-      </g>
-
-      {/* plant */}
-      <g>
-        <rect x="500" y="240" width="30" height="28" rx="3" fill="#161616" />
-        <path d="M515 240 q-10 -20 -18 -24 q4 18 18 24z" fill="hsl(150 50% 35%)" />
-        <path d="M515 240 q10 -22 22 -22 q-2 18 -22 22z" fill="hsl(150 55% 40%)" />
-      </g>
-    </svg>
+    </div>
   );
 }
 
@@ -373,7 +172,7 @@ const rotatorItems = [
 function Rotator() {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const id = window.setInterval(() => setI((x) => (x + 1) % rotatorItems.length), 4000);
+    const id = window.setInterval(() => setI((x) => (x + 1) % rotatorItems.length), 4500);
     return () => window.clearInterval(id);
   }, []);
   const item = rotatorItems[i];
@@ -404,13 +203,13 @@ function Rotator() {
                 src={item.image}
                 alt={item.name}
                 className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
           </motion.div>
         </AnimatePresence>
 
-        {/* info card */}
         <motion.div
           key={`info-${i}`}
           initial={{ y: 24, opacity: 0 }}
@@ -446,7 +245,6 @@ function Rotator() {
         </motion.div>
       </div>
 
-      {/* dots */}
       <div className="mt-4 flex justify-center gap-2">
         {rotatorItems.map((_, idx) => (
           <button
@@ -466,16 +264,34 @@ function Rotator() {
 /* ---------------- Section ---------------- */
 export function Workspace() {
   const ref = useRef<HTMLElement | null>(null);
-  const inView = useInView(ref, { margin: "-20% 0px -20% 0px" });
+  const inView = useInView(ref, { margin: "-15% 0px -15% 0px" });
   const [soundOn, setSoundOn] = useState(false);
   const [playing, setPlaying] = useState(true);
-  const sfx = useSfx(soundOn && inView && playing);
+  const active = inView && playing;
+  const sfx = useSfx(soundOn && active);
+
+  // periodic typing sfx (only when active)
+  useEffect(() => {
+    if (!active) return;
+    const id = window.setInterval(() => {
+      // simulate human typing bursts: 2-5 keys then pause
+      const burst = 2 + Math.floor(Math.random() * 4);
+      for (let i = 0; i < burst; i++) {
+        window.setTimeout(() => sfx.key(), i * (80 + Math.random() * 60));
+      }
+    }, 1400 + Math.random() * 900);
+    return () => window.clearInterval(id);
+  }, [active, sfx]);
 
   const [notif, setNotif] = useState<null | "incoming" | "reply">(null);
   useEffect(() => {
-    if (!inView || !playing) return;
+    if (!active) {
+      setNotif(null);
+      return;
+    }
     let t1: number;
     let t2: number;
+    let t3: number;
     const loop = () => {
       t1 = window.setTimeout(() => {
         setNotif("incoming");
@@ -483,59 +299,61 @@ export function Workspace() {
         t2 = window.setTimeout(() => {
           setNotif("reply");
           sfx.reply();
-          window.setTimeout(() => setNotif(null), 1600);
-        }, 2200);
-      }, 6000 + Math.random() * 4000);
+          t3 = window.setTimeout(() => setNotif(null), 1800);
+        }, 2400);
+      }, 7000 + Math.random() * 4000);
     };
     loop();
-    const id = window.setInterval(loop, 12000);
+    const id = window.setInterval(loop, 14000);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
+      window.clearTimeout(t3);
       window.clearInterval(id);
     };
-  }, [inView, playing, sfx]);
+  }, [active, sfx]);
 
-  const active = inView && playing;
-
-  const onType = useMemo(() => {
-    let n = 0;
-    return () => {
-      n = (n + 1) % 3;
-      if (n === 0) sfx.key();
-    };
-  }, [sfx]);
+  const floatingChips = useMemo(
+    () => [
+      { icon: Code2, label: "TypeScript", x: "6%", y: "12%", delay: 0 },
+      { icon: GitBranch, label: "main · synced", x: "82%", y: "8%", delay: 0.4 },
+      { icon: Cpu, label: "Build · 1.2s", x: "4%", y: "70%", delay: 0.8 },
+      { icon: Wifi, label: "Deploy · live", x: "84%", y: "74%", delay: 1.2 },
+    ],
+    []
+  );
 
   return (
     <section
       id="workspace"
       ref={ref}
-      className="relative overflow-hidden py-20 sm:py-28"
+      className="relative min-h-screen overflow-hidden py-20 sm:py-28"
     >
       {/* ambient */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[480px] w-[820px] -translate-x-1/2 rounded-full bg-[hsl(45_90%_55%/0.10)] blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-[hsl(45_90%_55%/0.10)] blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-[320px] w-[600px] rounded-full bg-[hsl(45_90%_55%/0.06)] blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-2xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(45_90%_55%/0.35)] bg-white/5 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-[hsl(45_90%_70%)] backdrop-blur">
-            <Sparkles className="h-3.5 w-3.5" /> Live Developer Workspace
+            <Sparkles className="h-3.5 w-3.5" /> Inside The Studio
           </div>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-            Inside the <span className="text-gold-gradient">Studio</span>
+            Professional <span className="text-gold-gradient">Mobile App</span> &amp; Web Developer
           </h2>
           <p className="mt-3 text-white/65">
-            A peek into the workspace where premium mobile apps, web platforms,
-            and digital products come to life.
+            A real workspace where premium mobile apps, web platforms, and
+            digital products are designed, engineered and shipped.
           </p>
         </div>
 
         {/* scene */}
-        <div className="relative mx-auto mt-12 max-w-5xl">
-          <div className="relative overflow-hidden rounded-3xl border border-[hsl(45_90%_55%/0.25)] bg-gradient-to-b from-[#0a0a0a] to-[#050505] p-4 shadow-[0_30px_120px_-30px_hsl(45_90%_55%/0.35)] sm:p-8">
+        <div className="relative mx-auto mt-12 max-w-6xl">
+          <div className="relative overflow-hidden rounded-3xl border border-[hsl(45_90%_55%/0.25)] bg-gradient-to-b from-[#0a0a0a] to-[#050505] p-3 shadow-[0_30px_140px_-30px_hsl(45_90%_55%/0.45)] sm:p-6">
             {/* controls */}
-            <div className="absolute right-4 top-4 z-10 flex gap-2">
+            <div className="absolute right-5 top-5 z-30 flex gap-2">
               <button
                 onClick={() => setPlaying((p) => !p)}
                 aria-label={playing ? "Pause animation" : "Play animation"}
@@ -553,98 +371,214 @@ export function Workspace() {
               </button>
             </div>
 
-            {/* scene grid */}
-            <div className="grid items-stretch gap-6 lg:grid-cols-[1fr_280px]">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/5 bg-[radial-gradient(ellipse_at_top,hsl(45_90%_55%/0.10),transparent_60%)]">
-                <DeveloperScene active={active} onType={onType} />
+            {/* main stage */}
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/5">
+              {/* photo */}
+              <motion.img
+                src={workspaceAsset.url}
+                alt="Realistic premium developer workspace with dual monitors, mechanical keyboard, brass desk lamp and city skyline at night"
+                className="absolute inset-0 h-full w-full object-cover"
+                initial={{ scale: 1.04 }}
+                animate={active ? { scale: [1.04, 1.06, 1.04] } : { scale: 1.04 }}
+                transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+                loading="lazy"
+                width={1600}
+                height={1000}
+              />
+              {/* tone overlays */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/40" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_45%,transparent_30%,rgba(0,0,0,0.55)_85%)]" />
 
-                {/* notification popup */}
-                <AnimatePresence>
-                  {notif && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.35 }}
-                      className="absolute right-4 top-4 w-56 rounded-xl border border-[hsl(45_90%_55%/0.4)] bg-black/80 p-3 backdrop-blur-xl"
-                    >
-                      <div className="flex items-center gap-2">
-                        <div className="grid h-7 w-7 place-items-center rounded-full bg-[hsl(45_90%_55%/0.2)]">
-                          <Bell className="h-3.5 w-3.5 text-[hsl(45_90%_70%)]" />
-                        </div>
-                        <div className="text-xs">
-                          <div className="font-medium text-white">
-                            {notif === "incoming" ? "New client message" : "Reply sent ✓"}
-                          </div>
-                          <div className="text-white/55">
-                            {notif === "incoming" ? "Project inquiry • now" : "Delivered just now"}
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              {/* live coding overlay (over right monitor area) */}
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: active ? 1 : 0.4, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute left-[6%] top-[16%] hidden w-[28%] rounded-lg border border-[hsl(45_90%_55%/0.35)] bg-black/55 p-2.5 backdrop-blur-md sm:block"
+              >
+                <div className="mb-1.5 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400/80" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/80" />
+                  <span className="ml-2 text-[8px] uppercase tracking-wider text-white/50">
+                    app.tsx
+                  </span>
+                </div>
+                <CodeStream active={active} />
+              </motion.div>
 
-              {/* side panel (music + status) */}
-              <div className="flex flex-col gap-4">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-[hsl(45_90%_55%/0.2)]">
-                      <Music2 className="h-4 w-4 text-[hsl(45_90%_70%)]" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-white">Lo-fi Focus</div>
-                      <div className="text-[11px] text-white/55">Deep work • Studio mix</div>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-end gap-1">
-                    {Array.from({ length: 22 }).map((_, i) => (
+              {/* typing indicator chip — pulses on keyboard area */}
+              <motion.div
+                className="absolute left-[40%] top-[78%] z-10"
+                animate={active ? { opacity: [0.4, 1, 0.4] } : { opacity: 0.3 }}
+                transition={{ duration: 1.2, repeat: Infinity }}
+              >
+                <div className="flex items-center gap-1.5 rounded-full border border-[hsl(45_90%_55%/0.5)] bg-black/70 px-2.5 py-1 backdrop-blur">
+                  <span className="flex gap-0.5">
+                    {[0, 1, 2].map((i) => (
                       <motion.span
                         key={i}
-                        className="w-1.5 rounded-sm bg-gradient-to-t from-[hsl(45_90%_45%)] to-[hsl(45_90%_75%)]"
-                        animate={active ? { height: [6, 18 + (i % 6) * 3, 6] } : { height: 6 }}
-                        transition={{
-                          duration: 0.9 + (i % 4) * 0.2,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: (i * 0.07) % 1.2,
-                        }}
-                        style={{ height: 6 }}
+                        className="h-1 w-1 rounded-full bg-[hsl(45_90%_65%)]"
+                        animate={active ? { y: [0, -2, 0] } : undefined}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
                       />
                     ))}
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider text-[hsl(45_90%_75%)]">
+                    typing
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* floating UI chips */}
+              {floatingChips.map((c, idx) => {
+                const Icon = c.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    className="absolute hidden items-center gap-1.5 rounded-full border border-white/10 bg-black/55 px-2.5 py-1 text-[10px] text-white/85 backdrop-blur-md md:inline-flex"
+                    style={{ left: c.x, top: c.y }}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={
+                      active
+                        ? { opacity: 1, y: [0, -4, 0] }
+                        : { opacity: 0.5, y: 0 }
+                    }
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: c.delay,
+                    }}
+                  >
+                    <Icon className="h-3 w-3 text-[hsl(45_90%_70%)]" />
+                    {c.label}
+                  </motion.div>
+                );
+              })}
+
+              {/* scanline accent */}
+              <motion.div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-[hsl(45_90%_60%/0.55)] to-transparent"
+                animate={active ? { y: ["8%", "92%", "8%"] } : { y: "50%" }}
+                transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+              />
+
+              {/* notification popup */}
+              <AnimatePresence>
+                {notif && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    transition={{ duration: 0.35 }}
+                    className="absolute right-5 top-20 z-20 w-60 rounded-xl border border-[hsl(45_90%_55%/0.4)] bg-black/80 p-3 backdrop-blur-xl"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="grid h-8 w-8 place-items-center rounded-full bg-[hsl(45_90%_55%/0.2)]">
+                        <Bell className="h-3.5 w-3.5 text-[hsl(45_90%_70%)]" />
+                      </div>
+                      <div className="text-xs">
+                        <div className="font-medium text-white">
+                          {notif === "incoming" ? "New client message" : "Reply sent ✓"}
+                        </div>
+                        <div className="text-white/55">
+                          {notif === "incoming"
+                            ? "Project inquiry • now"
+                            : "Delivered just now"}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* bottom status bar */}
+              <div className="absolute inset-x-3 bottom-3 z-10 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-black/55 px-3 py-2 backdrop-blur-md">
+                <div className="flex items-center gap-2 text-xs text-white/85">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  Coding in session
+                </div>
+                <div className="hidden gap-4 text-[10px] uppercase tracking-wider text-white/55 sm:flex">
+                  <span>VS Code</span>
+                  <span>Flutter · React · Node</span>
+                  <span>main</span>
+                </div>
+                <div className="flex items-center gap-2 text-[10px] text-[hsl(45_90%_75%)]">
+                  <Music2 className="h-3 w-3" /> Lo-fi · Deep Work
+                </div>
+              </div>
+            </div>
+
+            {/* equalizer + status (mobile-friendly row) */}
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-lg bg-[hsl(45_90%_55%/0.2)]">
+                    <Music2 className="h-4 w-4 text-[hsl(45_90%_70%)]" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-white">Lo-fi Focus</div>
+                    <div className="text-[11px] text-white/55">Studio mix</div>
                   </div>
                 </div>
+                <div className="mt-4 flex items-end gap-1">
+                  {Array.from({ length: 26 }).map((_, i) => (
+                    <motion.span
+                      key={i}
+                      className="w-1.5 rounded-sm bg-gradient-to-t from-[hsl(45_90%_45%)] to-[hsl(45_90%_75%)]"
+                      animate={active ? { height: [6, 18 + (i % 6) * 3, 6] } : { height: 6 }}
+                      transition={{
+                        duration: 0.9 + (i % 4) * 0.2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: (i * 0.07) % 1.2,
+                      }}
+                      style={{ height: 6 }}
+                    />
+                  ))}
+                </div>
+              </div>
 
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
-                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/55">
-                    Live Status
-                  </div>
-                  <div className="mt-2 flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                    </span>
-                    <span className="text-sm text-white">Coding in session</span>
-                  </div>
-                  <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
-                    <div className="rounded-md border border-white/10 bg-black/40 p-2">
-                      <div className="text-white/50">Editor</div>
-                      <div className="font-medium text-white">VS Code</div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/55">
+                  Live Status
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+                  {[
+                    { k: "Editor", v: "VS Code" },
+                    { k: "Stack", v: "Flutter" },
+                    { k: "Branch", v: "main" },
+                    { k: "Uptime", v: "∞" },
+                  ].map((m) => (
+                    <div key={m.k} className="rounded-md border border-white/10 bg-black/40 p-2">
+                      <div className="text-white/50">{m.k}</div>
+                      <div className="font-medium text-white">{m.v}</div>
                     </div>
-                    <div className="rounded-md border border-white/10 bg-black/40 p-2">
-                      <div className="text-white/50">Stack</div>
-                      <div className="font-medium text-white">Flutter</div>
-                    </div>
-                    <div className="rounded-md border border-white/10 bg-black/40 p-2">
-                      <div className="text-white/50">Branch</div>
-                      <div className="font-medium text-white">main</div>
-                    </div>
-                    <div className="rounded-md border border-white/10 bg-black/40 p-2">
-                      <div className="text-white/50">Uptime</div>
-                      <div className="font-medium text-white">∞</div>
-                    </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+                <div className="text-[11px] uppercase tracking-[0.2em] text-white/55">
+                  Now Building
+                </div>
+                <div className="mt-2 text-sm font-medium text-white">
+                  Premium mobile experiences
+                </div>
+                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-[hsl(45_90%_45%)] to-[hsl(45_90%_75%)]"
+                    animate={active ? { width: ["10%", "82%", "30%", "92%"] } : { width: "30%" }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </div>
+                <div className="mt-2 text-[10px] text-white/50">
+                  Compiling · Bundling · Shipping
                 </div>
               </div>
             </div>
