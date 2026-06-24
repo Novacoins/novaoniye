@@ -13,8 +13,10 @@ import {
   Cpu,
 } from "lucide-react";
 import workspaceAsset from "@/assets/developer-workspace.png.asset.json";
+import profileAsset from "@/assets/profile-picture.png.asset.json";
 
 const workspace = workspaceAsset.url;
+const profilePicture = profileAsset.url;
 
 const HERO_STATEMENT =
   "I Build Premium Mobile Apps, Web Applications, and Digital Products That Help Businesses Grow, Engage Users, and Scale Successfully.";
