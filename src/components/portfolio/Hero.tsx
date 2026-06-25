@@ -118,20 +118,20 @@ export function Hero() {
           transition={{ duration: 0.8 }}
           className="relative z-10"
         >
-          <div className="mb-6 flex items-center gap-4">
-            <div className="relative">
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-gold via-[#ffe9a0] to-gold opacity-75 blur-sm animate-pulse" />
+          <div className="mb-6 flex items-center gap-3 sm:gap-4">
+            <div className="relative h-16 w-16 shrink-0 rounded-full bg-gradient-to-tr from-gold via-[#ffe9a0] to-gold p-[3px] shadow-lg shadow-gold/25 sm:h-20 sm:w-20 lg:h-24 lg:w-24 lg:p-[4px]">
+              <div className="absolute inset-[-12%] rounded-full bg-gradient-to-tr from-gold/50 via-[#ffe9a0]/50 to-gold/50 opacity-75 blur-md animate-pulse" />
               <img
                 src={profilePicture}
                 alt="Oniye Taofiq Ishola"
-                className="relative h-20 w-20 rounded-full border-2 border-gold/50 object-cover shadow-2xl"
+                className="relative h-full w-full rounded-full object-cover shadow-2xl"
               />
             </div>
-            <div>
-              <div className="text-sm font-semibold text-foreground">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-foreground sm:text-base lg:text-lg">
                 Oniye Taofiq Ishola
               </div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground sm:text-sm">
                 Founder, NovaPlay Technologies
               </div>
             </div>
