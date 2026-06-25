@@ -481,34 +481,98 @@ export function Workspace() {
                 transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
               />
 
-              {/* notification popup */}
+              {/* premium developer identity card (replaces previous notification card) */}
+              <div className="absolute right-3 top-3 z-20 w-[210px] sm:right-5 sm:top-5 sm:w-[260px]">
+                <div className="relative overflow-hidden rounded-2xl border border-[hsl(45_90%_55%/0.45)] bg-gradient-to-b from-black/85 to-[#0a0a0a]/90 p-3 shadow-[0_20px_60px_-20px_hsl(45_90%_55%/0.5)] backdrop-blur-xl">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-[hsl(45_90%_70%)] to-transparent"
+                  />
+                  <div className="flex items-center gap-3">
+                    <div className="relative shrink-0">
+                      <div className="absolute -inset-[3px] rounded-full bg-gradient-to-tr from-[hsl(45_90%_55%)] via-[#ffe9a0] to-[hsl(45_90%_55%)] opacity-90 blur-[1px]" />
+                      <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[hsl(45_90%_70%)]/60 bg-black sm:h-14 sm:w-14">
+                        <img
+                          src={profilePicture.url}
+                          alt="Oniye Taofiq Ishola"
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-black bg-emerald-400 shadow-[0_0_8px_hsl(140_70%_50%)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-[13px] font-semibold text-white">
+                        Oniye Taofiq Ishola
+                      </div>
+                      <div className="truncate text-[10px] uppercase tracking-[0.14em] text-[hsl(45_90%_72%)]">
+                        Mobile · Web Developer
+                      </div>
+                      <div className="mt-0.5 truncate text-[10px] text-white/55">
+                        Founder, NovaPlay Technologies
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2.5 flex items-center justify-between border-t border-white/10 pt-2 text-[9px] uppercase tracking-wider">
+                    <span className="text-white/55">Status</span>
+                    <span className="flex items-center gap-1 text-emerald-300">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_hsl(140_70%_50%)]" />
+                      Available for projects
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* live client message popup (left side, doesn't overlap identity card) */}
               <AnimatePresence>
                 {notif && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                    initial={{ opacity: 0, x: -10, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -10, scale: 0.95 }}
                     transition={{ duration: 0.35 }}
-                    className="absolute right-5 top-20 z-20 w-60 rounded-xl border border-[hsl(45_90%_55%/0.4)] bg-black/80 p-3 backdrop-blur-xl"
+                    className="absolute left-3 top-3 z-20 w-[230px] rounded-xl border border-[hsl(45_90%_55%/0.4)] bg-black/80 p-3 backdrop-blur-xl sm:left-5 sm:top-5 sm:w-64"
                   >
-                    <div className="flex items-center gap-2">
-                      <div className="grid h-8 w-8 place-items-center rounded-full bg-[hsl(45_90%_55%/0.2)]">
+                    <div className="flex items-start gap-2">
+                      <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[hsl(45_90%_55%/0.2)]">
                         <Bell className="h-3.5 w-3.5 text-[hsl(45_90%_70%)]" />
                       </div>
-                      <div className="text-xs">
-                        <div className="font-medium text-white">
-                          {notif === "incoming" ? "New client message" : "Reply sent ✓"}
+                      <div className="min-w-0 text-xs">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="truncate font-medium text-white">
+                            {notif.phase === "incoming" ? notif.from : "Reply sent ✓"}
+                          </div>
+                          <div className="text-[9px] uppercase tracking-wider text-white/40">
+                            now
+                          </div>
                         </div>
-                        <div className="text-white/55">
-                          {notif === "incoming"
-                            ? "Project inquiry • now"
-                            : "Delivered just now"}
+                        <div className="mt-0.5 truncate text-white/65">
+                          {notif.text}
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* terminal log overlay — adds "alive" feel to second monitor */}
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: active ? 0.95 : 0.3, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute bottom-20 right-[6%] hidden w-[24%] rounded-lg border border-emerald-400/25 bg-black/70 p-2 font-mono text-[8px] leading-[1.5] text-emerald-300/85 backdrop-blur-md md:block"
+              >
+                <div className="mb-1 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400/80" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400/80" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/80" />
+                  <span className="ml-2 text-[8px] uppercase tracking-wider text-white/45">
+                    zsh — build
+                  </span>
+                </div>
+                <TerminalLog active={active} />
+              </motion.div>
+
 
               {/* bottom status bar */}
               <div className="absolute inset-x-3 bottom-3 z-10 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-black/55 px-3 py-2 backdrop-blur-md">
