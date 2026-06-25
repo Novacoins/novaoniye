@@ -295,7 +295,9 @@ export function Workspace() {
     return () => window.clearInterval(id);
   }, [active, sfx]);
 
-  const [notif, setNotif] = useState<null | "incoming" | "reply">(null);
+  const [notif, setNotif] = useState<
+    null | { phase: "incoming" | "reply"; from: string; text: string }
+  >(null);
   useEffect(() => {
     if (!active) {
       setNotif(null);
@@ -306,14 +308,16 @@ export function Workspace() {
     let t3: number;
     const loop = () => {
       t1 = window.setTimeout(() => {
-        setNotif("incoming");
+        const msg =
+          CLIENT_MESSAGES[Math.floor(Math.random() * CLIENT_MESSAGES.length)];
+        setNotif({ phase: "incoming", ...msg });
         sfx.notify();
         t2 = window.setTimeout(() => {
-          setNotif("reply");
+          setNotif({ phase: "reply", from: msg.from, text: "Thanks — on it." });
           sfx.reply();
-          t3 = window.setTimeout(() => setNotif(null), 1800);
-        }, 2400);
-      }, 7000 + Math.random() * 4000);
+          t3 = window.setTimeout(() => setNotif(null), 2200);
+        }, 2600);
+      }, 6000 + Math.random() * 4000);
     };
     loop();
     const id = window.setInterval(loop, 14000);
