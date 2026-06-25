@@ -15,6 +15,18 @@ import {
 } from "lucide-react";
 import { projects } from "./projects-data";
 import workspaceAsset from "@/assets/workspace-realistic.jpg.asset.json";
+import profilePicture from "@/assets/profile-picture.png.asset.json";
+
+/* ---------------- Realistic client messages ---------------- */
+const CLIENT_MESSAGES = [
+  { from: "Sarah · Acme Studio", text: "Can we schedule a meeting?" },
+  { from: "Daniel · Northwind", text: "Project approved 🎉" },
+  { from: "Inbound", text: "New client inquiry received." },
+  { from: "Lena · Orbit Labs", text: "Website delivered successfully." },
+  { from: "QA · NovaPlay", text: "Mobile app ready for review." },
+  { from: "Marcus · Vault Co.", text: "Loving the latest build." },
+  { from: "Ops", text: "Deployment finished · v8.2 live." },
+];
 
 /* ---------------- Sound (WebAudio synthesized) ---------------- */
 function useSfx(enabled: boolean) {
