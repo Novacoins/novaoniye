@@ -160,6 +160,51 @@ function CodeStream({ active }: { active: boolean }) {
   );
 }
 
+/* ---------------- Terminal log stream ---------------- */
+const TERMINAL_LINES = [
+  "$ bun run build",
+  "▲ vite v7.0 building for production…",
+  "✓ 1284 modules transformed",
+  "dist/assets/index.js   142.3 kb │ gzip: 48.2 kb",
+  "✓ built in 1.21s",
+  "$ git push origin main",
+  "→ pushed 3 commits · main",
+  "$ wrangler deploy",
+  "✓ deployed to https://novaplay.app",
+  "→ 200 OK · ttfb 84ms",
+  "$ pnpm test --silent",
+  "✓ 142 tests passed",
+];
+function TerminalLog({ active }: { active: boolean }) {
+  const [lines, setLines] = useState<string[]>(TERMINAL_LINES.slice(0, 5));
+  useEffect(() => {
+    if (!active) return;
+    let i = 5;
+    const id = window.setInterval(() => {
+      setLines((prev) => [
+        ...prev.slice(1),
+        TERMINAL_LINES[i++ % TERMINAL_LINES.length],
+      ]);
+    }, 1400);
+    return () => window.clearInterval(id);
+  }, [active]);
+  return (
+    <div>
+      {lines.map((l, i) => (
+        <motion.div
+          key={`${i}-${l}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.9 }}
+          transition={{ duration: 0.3 }}
+          className="truncate"
+        >
+          {l}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 /* ---------------- Project rotator ---------------- */
 const rotatorItems = [
   ...projects.map((p) => ({
