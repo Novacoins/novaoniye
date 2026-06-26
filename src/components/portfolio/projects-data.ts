@@ -91,7 +91,7 @@ export const projects: Project[] = [
     technologies: ["Flutter", "Dart", "Firebase", "Google Play Services", "AdMob"],
     platform: "Android",
     category: "Game",
-    version: "8.2",
+    version: "9.3",
     stats: [
       { label: "Total Users", value: "25K+" },
       { label: "Downloads", value: "50K+" },
@@ -137,7 +137,7 @@ export const projects: Project[] = [
     technologies: ["Flutter", "Dart", "Firebase", "Cloud Functions", "AdMob"],
     platform: "Android",
     category: "Game",
-    version: "8.2",
+    version: "5.2",
     stats: [
       { label: "Total Users", value: "40K+" },
       { label: "Downloads", value: "80K+" },
@@ -183,7 +183,7 @@ export const projects: Project[] = [
     technologies: ["Flutter", "Dart", "Firebase", "Game Services", "AdMob"],
     platform: "Android",
     category: "Game",
-    version: "8.2",
+    version: "9.3",
     stats: [
       { label: "Total Users", value: "60K+" },
       { label: "Downloads", value: "120K+" },

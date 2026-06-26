@@ -25,7 +25,7 @@ const CLIENT_MESSAGES = [
   { from: "Lena · Orbit Labs", text: "Website delivered successfully." },
   { from: "QA · NovaPlay", text: "Mobile app ready for review." },
   { from: "Marcus · Vault Co.", text: "Loving the latest build." },
-  { from: "Ops", text: "Deployment finished · v8.2 live." },
+  { from: "HQ · NovaPlay", text: "Deployment finished · v.2 live." },
 ];
 
 /* ---------------- Sound (WebAudio synthesized) ---------------- */
@@ -634,7 +634,7 @@ export function Workspace() {
                   <span>main</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-[hsl(45_90%_75%)]">
-                  <Music2 className="h-3 w-3" /> Lo-fi · Deep Work
+                  <Music2 className="h-3 w-3" /> NV-PM · Deep Work
                 </div>
               </div>
             </div>
@@ -647,7 +647,7 @@ export function Workspace() {
                     <Music2 className="h-4 w-4 text-[hsl(45_90%_70%)]" />
                   </div>
                   <div>
-                    <div className="text-sm font-medium text-white">Lo-fi Focus</div>
+                    <div className="text-sm font-medium text-white">NV-PM Focus</div>
                     <div className="text-[11px] text-white/55">Studio mix</div>
                   </div>
                 </div>

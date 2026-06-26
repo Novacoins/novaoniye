@@ -85,7 +85,7 @@ export function Portfolio() {
               <div className="flex flex-1 flex-col p-6">
                 <div className="flex items-center justify-between text-xs uppercase tracking-widest text-muted-foreground">
                   <span>{p.cat}</span>
-                  <span className="text-gold/80">v{p.version} · {p.platform}</span>
+                  <span className="text-gold/80">V{p.version} · {p.platform.toUpperCase()}</span>
                 </div>
                 <div className="mt-2 flex items-start justify-between gap-3">
                   <h3 className="font-display text-2xl">{p.title}</h3>
