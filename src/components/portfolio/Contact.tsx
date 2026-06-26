@@ -3,6 +3,8 @@ import { Mail, Phone, MessageCircle, MapPin, Send } from "lucide-react";
 import { useState } from "react";
 import { SectionLabel } from "./About";
 
+const ACCESS_KEY = "b3825961-2c7a-4517-802e-e355bdf5557a";
+
 const channels = [
   {
     icon: Mail,
@@ -21,7 +23,46 @@ const channels = [
 ];
 
 export function Contact() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("submitting");
+
+    const payload = new FormData();
+    payload.append("access_key", ACCESS_KEY);
+    payload.append("subject", `New message from ${formData.name}`);
+    payload.append("from_name", formData.name);
+    payload.append("email", formData.email);
+    payload.append("phone", formData.phone);
+    payload.append("message", formData.message);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: payload,
+      });
+      const result = await response.json();
+      if (result.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
 
   return (
     <section id="contact" className="relative py-24 lg:py-32">
