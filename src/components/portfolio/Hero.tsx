@@ -252,7 +252,7 @@ export function Hero() {
                   ))}
                 </div>
                 <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Lo-fi
+                  NV-PM
                 </span>
               </motion.div>
 
