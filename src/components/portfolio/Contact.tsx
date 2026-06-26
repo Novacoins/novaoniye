@@ -10,14 +10,14 @@ const channels = [
     value: "oniyetaofiqishola11@gmail.com",
     href: "mailto:oniyetaofiqishola11@gmail.com",
   },
-  { icon: Phone, label: "Phone", value: "+234 904 540 3005", href: "tel:+2349045403005" },
+  { icon: Phone, label: "\n", value: "\n", href: "tel:+2349045403005" },
   {
     icon: MessageCircle,
     label: "WhatsApp",
-    value: "+234 904 540 3005",
+    value: "\n",
     href: "https://wa.me/2349045403005",
   },
-  { icon: MapPin, label: "Location", value: "Nigeria · Available worldwide", href: "#" },
+  { icon: MapPin, label: "Location", value: " Available worldwide", href: "#" },
 ];
 
 export function Contact() {

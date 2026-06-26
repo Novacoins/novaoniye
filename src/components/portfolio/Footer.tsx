@@ -53,9 +53,9 @@ export function Footer() {
             </div>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>oniyetaofiqishola11@gmail.com</li>
-              <li>+234 904 540 3005</li>
+              <li>\n</li>
               <li>WhatsApp: 09045403005</li>
-              <li>Nigeria · Remote worldwide</li>
+              <li>worldwide🌍</li>
             </ul>
           </div>
         </div>

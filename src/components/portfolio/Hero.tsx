@@ -147,7 +147,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
-            I'm <span className="text-foreground">Oniye Taofiq Ishola</span> — a
+            I'm <span className="text-gold-gradient font-semibold">Nova Prime Official</span> — a
             mobile app developer, web developer, and digital entrepreneur with
             5+ years crafting premium, business-focused digital products.
           </p>

@@ -34,7 +34,7 @@ const reviews = [
   {
     name: "Mia Chen",
     role: "Product Designer",
-    company: "Form & Function · USA",
+    company: "FORM & FUNCTION · NY",
     image: t4,
     quote:
       "A rare blend of design sensitivity and engineering craft. Every pixel and interaction shipped exactly as envisioned.",

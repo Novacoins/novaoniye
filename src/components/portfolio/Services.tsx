@@ -20,13 +20,13 @@ const services = [
   { icon: Globe, title: "Website Design & Development", desc: "Pixel-perfect, fast, responsive websites that convert visitors." },
   { icon: ShoppingBag, title: "E-Commerce Development", desc: "Full storefronts with payments, inventory, and growth tooling." },
   { icon: Building2, title: "Business Websites", desc: "Premium corporate sites that establish authority and trust." },
-  { icon: Settings, title: "Custom Software Solutions", desc: "Tailor-made platforms built around your unique workflow." },
-  { icon: Palette, title: "UI / UX Design", desc: "Interfaces designed with clarity, hierarchy, and craft." },
-  { icon: Rocket, title: "Landing Page Development", desc: "High-conversion landing pages for launches and campaigns." },
+  { icon: Settings, title: "Custom Software Solutions\u00a0", desc: "Tailor-made platforms built around your unique workflow." },
+  { icon: Palette, title: "UI / UX Design 🖌️", desc: "Interfaces designed with clarity, hierarchy, and craft." },
+  { icon: Rocket, title: "Landing Page Development🚀", desc: "High-conversion landing pages for launches and campaigns." },
   { icon: Workflow, title: "Business Automation", desc: "Streamline ops with smart workflows and AI-assisted tools." },
   { icon: Wrench, title: "App Customization", desc: "Refresh, extend, or rebuild existing apps end-to-end." },
   { icon: TrendingUp, title: "SEO Optimization", desc: "Technical SEO and structure that earns long-term traffic." },
-  { icon: MonitorSmartphone, title: "Web Applications", desc: "Modern web apps with real-time data and dashboards." },
+  { icon: MonitorSmartphone, title: "Web Applications 📱", desc: "Modern web apps with real-time data and dashboards." },
   { icon: Target, title: "Branding Solutions", desc: "Cohesive brand systems for digital-first businesses." },
 ];
 

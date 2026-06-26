@@ -42,9 +42,9 @@ export function About() {
             <div className="mt-10 grid grid-cols-2 gap-4">
               {[
                 { k: "Founded", v: "NovaPlay Technologies" },
-                { k: "Based in", v: "Nigeria · Remote" },
+                { k: "Based in", v: "Worldwide🌍" },
                 { k: "Stack", v: "Mobile · Web · AI" },
-                { k: "Status", v: "Available for work" },
+                { k: "Status", v: "Available for work 👨‍💻" },
               ].map((i) => (
                 <div
                   key={i.k}
