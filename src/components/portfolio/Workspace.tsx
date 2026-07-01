@@ -5,8 +5,6 @@ import {
   Music2,
   Pause,
   Play,
-  Volume2,
-  VolumeX,
   Sparkles,
   Code2,
   GitBranch,
@@ -15,7 +13,6 @@ import {
 } from "lucide-react";
 import { projects } from "./projects-data";
 import workspaceAsset from "@/assets/workspace-realistic.jpg.asset.json";
-import profilePicture from "@/assets/profile-picture.png.asset.json";
 
 /* ---------------- Realistic client messages ---------------- */
 const CLIENT_MESSAGES = [
@@ -23,10 +20,11 @@ const CLIENT_MESSAGES = [
   { from: "Daniel · Northwind", text: "Project approved 🎉" },
   { from: "Inbound", text: "New client inquiry received." },
   { from: "Lena · Orbit Labs", text: "Website delivered successfully." },
-  { from: "QA · NovaPlay", text: "Mobile app ready for review." },
+  { from: "QA · Nova Studio", text: "Mobile app ready for review." },
   { from: "Marcus · Vault Co.", text: "Loving the latest build." },
-  { from: "HQ · NovaPlay", text: "Deployment finished · v.2 live." },
+  { from: "HQ · Nova Studio", text: "Deployment finished · v.2 live." },
 ];
+
 
 /* ---------------- Sound (WebAudio synthesized) ---------------- */
 function useSfx(enabled: boolean) {
@@ -322,10 +320,33 @@ function Rotator() {
 export function Workspace() {
   const ref = useRef<HTMLElement | null>(null);
   const inView = useInView(ref, { margin: "-15% 0px -15% 0px" });
-  const [soundOn, setSoundOn] = useState(false);
   const [playing, setPlaying] = useState(true);
   const active = inView && playing;
-  const sfx = useSfx(soundOn && active);
+  // Auto-play studio ambience whenever the section is on screen.
+  const sfx = useSfx(active);
+
+  // On first user gesture (required by browsers), resume any suspended audio ctx.
+  useEffect(() => {
+    const resume = () => {
+      const AC =
+        (window as unknown as { AudioContext?: typeof AudioContext }).AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AC) return;
+      // Touch/click will unlock audio globally for the tab.
+      const tmp = new AC();
+      tmp.resume().catch(() => {});
+    };
+    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    window.addEventListener("pointerdown", resume, opts);
+    window.addEventListener("keydown", resume, opts);
+    window.addEventListener("touchstart", resume, opts);
+    return () => {
+      window.removeEventListener("pointerdown", resume);
+      window.removeEventListener("keydown", resume);
+      window.removeEventListener("touchstart", resume);
+    };
+  }, []);
+
 
   // periodic typing sfx (only when active)
   useEffect(() => {
@@ -421,14 +442,6 @@ export function Workspace() {
                 className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-black/60 text-white/80 backdrop-blur transition hover:text-[hsl(45_90%_70%)]"
               >
                 {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              </button>
-              <button
-                onClick={() => setSoundOn((s) => !s)}
-                aria-label={soundOn ? "Mute sound" : "Enable sound"}
-                className="inline-flex h-9 items-center gap-2 rounded-full border border-[hsl(45_90%_55%/0.4)] bg-black/60 px-3 text-xs text-[hsl(45_90%_75%)] backdrop-blur transition hover:bg-[hsl(45_90%_55%/0.12)]"
-              >
-                {soundOn ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-                {soundOn ? "Sound on" : "Enable sound"}
               </button>
             </div>
 
@@ -526,47 +539,6 @@ export function Workspace() {
                 transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
               />
 
-              {/* premium developer identity card (replaces previous notification card) */}
-              <div className="absolute right-3 top-3 z-20 w-[210px] sm:right-5 sm:top-5 sm:w-[260px]">
-                <div className="relative overflow-hidden rounded-2xl border border-[hsl(45_90%_55%/0.45)] bg-gradient-to-b from-black/85 to-[#0a0a0a]/90 p-3 shadow-[0_20px_60px_-20px_hsl(45_90%_55%/0.5)] backdrop-blur-xl">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-[hsl(45_90%_70%)] to-transparent"
-                  />
-                  <div className="flex items-center gap-3">
-                    <div className="relative shrink-0">
-                      <div className="absolute -inset-[3px] rounded-full bg-gradient-to-tr from-[hsl(45_90%_55%)] via-[#ffe9a0] to-[hsl(45_90%_55%)] opacity-90 blur-[1px]" />
-                      <div className="relative h-12 w-12 overflow-hidden rounded-full border border-[hsl(45_90%_70%)]/60 bg-black sm:h-14 sm:w-14">
-                        <img
-                          src={profilePicture.url}
-                          alt="Oniye Taofiq Ishola"
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-black bg-emerald-400 shadow-[0_0_8px_hsl(140_70%_50%)]" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-[13px] font-semibold text-white">
-                        Oniye Taofiq Ishola
-                      </div>
-                      <div className="truncate text-[10px] uppercase tracking-[0.14em] text-[hsl(45_90%_72%)]">
-                        Mobile · Web Developer
-                      </div>
-                      <div className="mt-0.5 truncate text-[10px] text-white/55">
-                        Founder, NovaPlay Technologies
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-2.5 flex items-center justify-between border-t border-white/10 pt-2 text-[9px] uppercase tracking-wider">
-                    <span className="text-white/55">Status</span>
-                    <span className="flex items-center gap-1 text-emerald-300">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_hsl(140_70%_50%)]" />
-                      Available for projects
-                    </span>
-                  </div>
-                </div>
-              </div>
 
               {/* live client message popup (left side, doesn't overlap identity card) */}
               <AnimatePresence>

@@ -5,7 +5,7 @@ const links = [
   { href: "#home", label: "Home" },
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
-  { href: "#portfolio", label: "Portfolio" },
+  { href: "#portfolio", label: "Projects" },
   { href: "#testimonials", label: "Reviews" },
   { href: "#contact", label: "Contact" },
 ];
@@ -34,8 +34,8 @@ export function Nav() {
           }`}
         >
           <a href="#home" className="flex items-center gap-2">
-            <span className="font-display text-2xl tracking-tight">
-              Oniye<span className="text-gold-gradient italic">.</span>
+            <span className="font-display text-2xl font-semibold tracking-tight text-foreground">
+              Nova<span className="text-gold-gradient italic"> Studio</span>
             </span>
           </a>
 
@@ -44,7 +44,7 @@ export function Nav() {
               <a
                 key={l.href}
                 href={l.href}
-                className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="group relative text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
               >
                 {l.label}
                 <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold transition-all group-hover:w-full" />
@@ -56,7 +56,7 @@ export function Nav() {
             href="#contact"
             className="hidden rounded-full border border-gold/40 bg-gold/10 px-5 py-2 text-sm font-medium text-gold transition-all hover:bg-gold hover:text-primary-foreground lg:inline-flex"
           >
-            Hire Me
+            Hire Us
           </a>
 
           <button
@@ -77,7 +77,7 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="text-base font-medium text-foreground/80"
+                className="text-base font-medium text-foreground/90"
               >
                 {l.label}
               </a>
@@ -87,7 +87,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
             >
-              Hire Me
+              Hire Us
             </a>
           </nav>
         </div>

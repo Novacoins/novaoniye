@@ -4,7 +4,6 @@ import { Hero } from "@/components/portfolio/Hero";
 import { Workspace } from "@/components/portfolio/Workspace";
 import { About } from "@/components/portfolio/About";
 import { Services } from "@/components/portfolio/Services";
-import { Skills } from "@/components/portfolio/Skills";
 import { Portfolio } from "@/components/portfolio/Portfolio";
 import { Stats } from "@/components/portfolio/Stats";
 import { WhyMe, FAQ } from "@/components/portfolio/WhyMe";
@@ -16,29 +15,29 @@ import { FloatingActions } from "@/components/portfolio/FloatingActions";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Oniye Taofiq Ishola — Mobile App Developer | Luxury Portfolio" },
+      { title: "Nova Studio — Premium Mobile Apps, Web & AI Development" },
       {
         name: "description",
         content:
-          "Oniye Taofiq Ishola — premium mobile app developer, web developer, and digital entrepreneur. Founder of NovaPlay Technologies. I build modern apps and websites that drive businesses forward, engage users, and elevate experiences.",
+          "Nova Studio is a premium digital agency designing, developing, and launching world-class mobile apps, AI solutions, web platforms, and luxury brand identities for businesses worldwide.",
       },
       {
         name: "keywords",
         content:
-          "mobile app developer, luxury portfolio, Flutter developer, React Native developer, web developer Nigeria, Android app developer, Play Store developer, NovaPlay Technologies, Oniye Taofiq Ishola, digital entrepreneur, Firebase developer, UI/UX design, premium portfolio",
+          "Nova Studio, mobile app development, web development, AI applications, iOS developer, Android developer, SaaS, luxury digital agency, Flutter, React Native, Firebase, UI/UX design",
       },
-      { property: "og:title", content: "Oniye Taofiq Ishola — Mobile & Web Developer" },
+      { property: "og:title", content: "Nova Studio — Premium Mobile Apps, Web & AI" },
       {
         property: "og:description",
         content:
-          "I build modern apps and websites that drive businesses forward, engage users, and elevate experiences.",
+          "We design, develop, and launch premium mobile apps, AI solutions, business websites, and digital platforms for businesses worldwide.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:title", content: "Oniye Taofiq Ishola — Mobile & Web Developer" },
+      { name: "twitter:title", content: "Nova Studio — Premium Mobile Apps, Web & AI" },
       {
         name: "twitter:description",
         content:
-          "Premium mobile app developer & founder of NovaPlay Technologies.",
+          "Premium digital agency for mobile apps, AI, web platforms and luxury brand identities.",
       },
     ],
   }),
@@ -53,7 +52,6 @@ function Index() {
       <Workspace />
       <About />
       <Services />
-      <Skills />
       <Stats />
       <Portfolio />
       <WhyMe />

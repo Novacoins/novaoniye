@@ -128,6 +128,18 @@ const faqs = [
   },
 ];
 
+const FAQ_ACCENTS = [
+  { ring: "hsl(45 90% 60%)", glow: "rgba(255,215,0,0.28)" },   // gold
+  { ring: "hsl(200 90% 60%)", glow: "rgba(56,189,248,0.28)" }, // sky
+  { ring: "hsl(280 80% 65%)", glow: "rgba(192,132,252,0.28)" },// violet
+  { ring: "hsl(150 70% 55%)", glow: "rgba(52,211,153,0.28)" }, // emerald
+  { ring: "hsl(15 90% 62%)",  glow: "rgba(251,146,60,0.28)" }, // orange
+  { ring: "hsl(340 85% 62%)", glow: "rgba(244,114,182,0.28)" },// pink
+  { ring: "hsl(45 90% 60%)",  glow: "rgba(255,215,0,0.28)" },
+  { ring: "hsl(200 90% 60%)", glow: "rgba(56,189,248,0.28)" },
+  { ring: "hsl(280 80% 65%)", glow: "rgba(192,132,252,0.28)" },
+];
+
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -138,40 +150,63 @@ export function FAQ() {
           <div className="flex justify-center">
             <SectionLabel>FAQ</SectionLabel>
           </div>
-          <h2 className="mt-4 font-display text-4xl leading-tight md:text-5xl lg:text-6xl">
+          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
             Questions?{" "}
             <span className="text-gold-gradient italic">Answers.</span>
           </h2>
-          <p className="mt-5 text-muted-foreground">
-            Everything you need to know before starting your next project.
+          <p className="mt-5 text-base text-foreground/80 md:text-lg">
+            Everything you need to know before starting your next project with Nova Studio.
           </p>
         </div>
 
-        <div className="mt-14 space-y-4">
+        <div className="mt-14 space-y-5">
           {faqs.map((item, i) => {
             const isOpen = openIndex === i;
+            const accent = FAQ_ACCENTS[i % FAQ_ACCENTS.length];
             return (
               <motion.div
                 key={item.q}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="overflow-hidden rounded-2xl border border-border/60 bg-surface/50 backdrop-blur-xl transition-colors hover:border-gold/30"
+                transition={{ duration: 0.5, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative overflow-hidden rounded-2xl border bg-surface/60 backdrop-blur-xl transition-all duration-500"
+                style={{
+                  borderColor: isOpen ? accent.ring : "hsl(0 0% 100% / 0.08)",
+                  boxShadow: isOpen ? `0 20px 60px -20px ${accent.glow}` : undefined,
+                }}
               >
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute left-0 top-0 h-full w-[3px] transition-all duration-500"
+                  style={{
+                    background: `linear-gradient(180deg, transparent, ${accent.ring}, transparent)`,
+                    opacity: isOpen ? 1 : 0.35,
+                  }}
+                />
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 p-6 text-left"
+                  className="flex w-full items-center justify-between gap-4 p-6 text-left md:p-7"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-display text-lg md:text-xl">{item.q}</span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-gold/10 text-gold transition-all duration-300 hover:bg-gold hover:text-primary-foreground">
-                    {isOpen ? (
-                      <Minus className="h-4 w-4" />
-                    ) : (
-                      <Plus className="h-4 w-4" />
-                    )}
+                  <span
+                    className="font-display text-lg font-semibold text-white md:text-2xl"
+                    style={{ color: isOpen ? accent.ring : undefined }}
+                  >
+                    {item.q}
                   </span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-white transition-colors"
+                    style={{
+                      borderColor: accent.ring,
+                      backgroundColor: isOpen ? accent.ring : "transparent",
+                      color: isOpen ? "#0a0a0a" : accent.ring,
+                    }}
+                  >
+                    {isOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                  </motion.span>
                 </button>
 
                 <motion.div
@@ -180,9 +215,9 @@ export function FAQ() {
                     height: isOpen ? "auto" : 0,
                     opacity: isOpen ? 1 : 0,
                   }}
-                  transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground md:text-base">
+                  <div className="px-6 pb-7 pr-16 text-base leading-relaxed text-foreground/85 md:px-7 md:text-lg">
                     {item.a}
                   </div>
                 </motion.div>
@@ -194,3 +229,4 @@ export function FAQ() {
     </section>
   );
 }
+
