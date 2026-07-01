@@ -5,8 +5,6 @@ import {
   Music2,
   Pause,
   Play,
-  Volume2,
-  VolumeX,
   Sparkles,
   Code2,
   GitBranch,
@@ -15,7 +13,6 @@ import {
 } from "lucide-react";
 import { projects } from "./projects-data";
 import workspaceAsset from "@/assets/workspace-realistic.jpg.asset.json";
-import profilePicture from "@/assets/profile-picture.png.asset.json";
 
 /* ---------------- Realistic client messages ---------------- */
 const CLIENT_MESSAGES = [
@@ -23,10 +20,11 @@ const CLIENT_MESSAGES = [
   { from: "Daniel · Northwind", text: "Project approved 🎉" },
   { from: "Inbound", text: "New client inquiry received." },
   { from: "Lena · Orbit Labs", text: "Website delivered successfully." },
-  { from: "QA · NovaPlay", text: "Mobile app ready for review." },
+  { from: "QA · Nova Studio", text: "Mobile app ready for review." },
   { from: "Marcus · Vault Co.", text: "Loving the latest build." },
-  { from: "HQ · NovaPlay", text: "Deployment finished · v.2 live." },
+  { from: "HQ · Nova Studio", text: "Deployment finished · v.2 live." },
 ];
+
 
 /* ---------------- Sound (WebAudio synthesized) ---------------- */
 function useSfx(enabled: boolean) {
@@ -322,10 +320,33 @@ function Rotator() {
 export function Workspace() {
   const ref = useRef<HTMLElement | null>(null);
   const inView = useInView(ref, { margin: "-15% 0px -15% 0px" });
-  const [soundOn, setSoundOn] = useState(false);
   const [playing, setPlaying] = useState(true);
   const active = inView && playing;
-  const sfx = useSfx(soundOn && active);
+  // Auto-play studio ambience whenever the section is on screen.
+  const sfx = useSfx(active);
+
+  // On first user gesture (required by browsers), resume any suspended audio ctx.
+  useEffect(() => {
+    const resume = () => {
+      const AC =
+        (window as unknown as { AudioContext?: typeof AudioContext }).AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!AC) return;
+      // Touch/click will unlock audio globally for the tab.
+      const tmp = new AC();
+      tmp.resume().catch(() => {});
+    };
+    const opts = { once: true, passive: true } as AddEventListenerOptions;
+    window.addEventListener("pointerdown", resume, opts);
+    window.addEventListener("keydown", resume, opts);
+    window.addEventListener("touchstart", resume, opts);
+    return () => {
+      window.removeEventListener("pointerdown", resume);
+      window.removeEventListener("keydown", resume);
+      window.removeEventListener("touchstart", resume);
+    };
+  }, []);
+
 
   // periodic typing sfx (only when active)
   useEffect(() => {

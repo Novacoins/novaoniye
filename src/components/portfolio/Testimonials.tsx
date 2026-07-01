@@ -13,7 +13,7 @@ const reviews = [
     company: "Northwind Labs · USA",
     image: t1,
     quote:
-      "Exceptional mobile app development. Oniye delivered a polished product ahead of schedule and elevated every detail of the experience.",
+      "Exceptional mobile app development. Nova Studio delivered a polished product ahead of schedule and elevated every detail of the experience.",
   },
   {
     name: "Sophie Bennett",

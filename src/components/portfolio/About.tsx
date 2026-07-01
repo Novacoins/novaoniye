@@ -26,23 +26,23 @@ export function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="font-display text-4xl leading-tight md:text-5xl lg:text-6xl">
-              A self-taught developer with{" "}
+            <h2 className="font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+              A premium digital studio with{" "}
               <span className="text-gold-gradient italic">5+ years</span> of
               craft.
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-muted-foreground">
-              I help businesses, startups, and entrepreneurs transform their
-              ideas into successful digital products. As the founder of
-              NovaPlay Technologies, I've delivered mobile apps, web platforms,
-              custom software, and business solutions designed for growth,
-              innovation, and profitability.
+            <p className="mt-6 text-base leading-relaxed text-foreground/80 md:text-lg">
+              Nova Studio helps businesses, startups, and entrepreneurs
+              transform their ideas into successful digital products. We deliver
+              premium mobile apps, AI systems, web platforms, custom software,
+              and brand experiences engineered for growth, innovation, and
+              lasting profitability.
             </p>
 
             <div className="mt-10 grid grid-cols-2 gap-4">
               {[
-                { k: "Founded", v: "NovaPlay Technologies" },
-                { k: "Based in", v: "Worldwide🌍" },
+                { k: "Studio", v: "Nova Studio" },
+                { k: "Based in", v: "Worldwide 🌍" },
                 { k: "Stack", v: "Mobile · Web · AI" },
                 { k: "Status", v: "Available for work 👨‍💻" },
               ].map((i) => (
@@ -71,7 +71,7 @@ export function About() {
               <div className="text-xs uppercase tracking-[0.25em] text-gold">
                 Core Capabilities
               </div>
-              <h3 className="mt-3 font-display text-3xl">My Skills</h3>
+              <h3 className="mt-3 font-display text-3xl">Our Skills</h3>
               <div className="mt-8 flex flex-wrap gap-2">
                 {skills.map((s) => (
                   <span
@@ -85,15 +85,15 @@ export function About() {
 
               <div className="mt-10 border-t border-border pt-8">
                 <div className="text-xs uppercase tracking-[0.25em] text-gold">
-                  Education
+                  Studio Approach
                 </div>
                 <h4 className="mt-3 font-display text-2xl">
-                  Self-Taught Software Developer
+                  Craft-First Software Development
                 </h4>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  5+ years across Mobile App Development, Website Development,
-                  UI/UX Design, Digital Product Development, Business Solutions,
-                  and AI-Assisted Development.
+                <p className="mt-2 text-sm text-foreground/75">
+                  5+ years shipping premium Mobile Apps, Web Platforms, UI/UX
+                  Design, Digital Products, Business Solutions and AI-assisted
+                  systems for clients worldwide.
                 </p>
               </div>
             </div>

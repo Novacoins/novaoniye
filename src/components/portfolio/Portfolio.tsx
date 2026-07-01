@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Sparkles, Rocket, Globe, Download } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SectionLabel } from "./About";
 import { projects } from "./projects-data";
@@ -24,13 +24,139 @@ export function Portfolio() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SectionLabel>Selected Work</SectionLabel>
-            <h2 className="mt-4 font-display text-4xl leading-tight md:text-5xl lg:text-6xl">
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
               Projects that move{" "}
               <span className="text-gold-gradient italic">businesses</span>{" "}
               forward.
             </h2>
           </div>
         </div>
+
+        {/* Featured Coming Soon: Nova Vision AI */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7 }}
+          className="relative mt-12 overflow-hidden rounded-[2rem] border border-gold/40 bg-gradient-to-br from-[#0a0a0a] via-[#12100a] to-[#0a0a0a] p-8 shadow-[0_40px_140px_-40px_rgba(255,215,0,0.5)] md:p-12"
+        >
+          <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-gold/15 blur-[100px]" />
+          <div className="pointer-events-none absolute -left-24 bottom-0 h-[320px] w-[320px] rounded-full bg-violet-500/10 blur-[100px]" />
+          <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[conic-gradient(from_0deg,transparent,rgba(255,215,0,0.15),transparent_30%,transparent_70%,rgba(255,215,0,0.15),transparent)] opacity-40 animate-spin [animation-duration:20s]" />
+
+          <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.28em] text-gold backdrop-blur">
+                <Sparkles className="h-3.5 w-3.5" /> Coming Soon · Featured
+              </div>
+              <h3 className="mt-5 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+                Nova Vision <span className="text-gold-gradient italic">AI</span>
+              </h3>
+              <p className="mt-5 text-base leading-relaxed text-foreground/85 md:text-lg">
+                🤖 Nova Vision AI is our next-generation artificial intelligence
+                platform designed to provide intelligent 🖼️ image recognition,
+                🤖 AI-powered assistance, smart productivity tools, 📄 document
+                analysis, object detection, educational 🤖 AI, and business
+                automation. It combines powerful 🤖 AI technologies with a
+                premium user experience to help individuals and 💹 businesses
+                work faster, smarter, and more efficiently.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                {[
+                  "Image Recognition",
+                  "Document Analysis",
+                  "AI Assistant",
+                  "Object Detection",
+                  "Educational AI",
+                  "Business Automation",
+                ].map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-gold/25 bg-gold/5 px-3.5 py-1.5 text-xs font-medium text-foreground/90"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <button
+                  disabled
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-sm font-semibold text-gold opacity-90"
+                >
+                  <Rocket className="h-4 w-4" /> Launching Soon
+                </button>
+                <button
+                  disabled
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-border bg-surface/60 px-6 py-3 text-sm font-medium text-foreground/70"
+                >
+                  <Download className="h-4 w-4" /> Google Play · Coming Soon
+                </button>
+                <button
+                  disabled
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-border bg-surface/60 px-6 py-3 text-sm font-medium text-foreground/70"
+                >
+                  <Globe className="h-4 w-4" /> Website · Coming Soon
+                </button>
+              </div>
+            </div>
+
+            {/* Preview panel */}
+            <div className="relative">
+              <div className="relative aspect-square overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#0a0a0a] via-[#1a1408] to-[#0a0a0a] shadow-[0_30px_100px_-20px_rgba(255,215,0,0.35)]">
+                {/* Animated grid */}
+                <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,215,0,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,215,0,0.15)_1px,transparent_1px)] [background-size:32px_32px]" />
+                {/* Central AI orb */}
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1], rotate: [0, 6, 0] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                >
+                  <div className="relative flex h-48 w-48 items-center justify-center rounded-full bg-gradient-to-br from-gold via-[#ffe9a0] to-[#b8860b] shadow-[0_0_80px_rgba(255,215,0,0.6)] md:h-56 md:w-56">
+                    <div className="absolute inset-2 rounded-full bg-black/70 backdrop-blur-xl" />
+                    <Sparkles className="relative h-16 w-16 text-gold md:h-20 md:w-20" />
+                  </div>
+                </motion.div>
+                {/* Orbiting dots */}
+                {[0, 1, 2, 3].map((i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-gold shadow-[0_0_12px_rgba(255,215,0,0.8)]"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 10 + i * 3, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: `${0} ${0}`, x: -4, y: -4 }}
+                  >
+                    <div
+                      style={{
+                        transform: `translate(${120 + i * 20}px, 0)`,
+                      }}
+                      className="h-2 w-2 rounded-full bg-gold"
+                    />
+                  </motion.div>
+                ))}
+                {/* Coming soon badge */}
+                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-black/70 p-4 backdrop-blur-xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-gold">
+                        Nova Vision AI
+                      </div>
+                      <div className="mt-0.5 text-sm font-semibold text-white">
+                        Intelligent Vision Platform
+                      </div>
+                    </div>
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
 
         <div className="mt-10 flex flex-wrap gap-2">
           {categories.map((c) => (
