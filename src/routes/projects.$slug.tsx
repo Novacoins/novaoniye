@@ -24,10 +24,10 @@ export const Route = createFileRoute("/projects/$slug")({
   },
   head: ({ loaderData }) => {
     const p = loaderData?.project as Project | undefined;
-    if (!p) return { meta: [{ title: "Project — Oniye Taofiq Ishola" }] };
+    if (!p) return { meta: [{ title: "Project — Nova Studio" }] };
     return {
       meta: [
-        { title: `${p.title} — Oniye Taofiq Ishola` },
+        { title: `${p.title} — Nova Studio` },
         { name: "description", content: p.short },
         { property: "og:title", content: `${p.title} — Case Study` },
         { property: "og:description", content: p.short },
