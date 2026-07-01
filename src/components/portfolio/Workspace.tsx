@@ -443,14 +443,6 @@ export function Workspace() {
               >
                 {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
               </button>
-              <button
-                onClick={() => setSoundOn((s) => !s)}
-                aria-label={soundOn ? "Mute sound" : "Enable sound"}
-                className="inline-flex h-9 items-center gap-2 rounded-full border border-[hsl(45_90%_55%/0.4)] bg-black/60 px-3 text-xs text-[hsl(45_90%_75%)] backdrop-blur transition hover:bg-[hsl(45_90%_55%/0.12)]"
-              >
-                {soundOn ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-                {soundOn ? "Sound on" : "Enable sound"}
-              </button>
             </div>
 
             {/* main stage */}
