@@ -321,8 +321,20 @@ export function Workspace() {
   const ref = useRef<HTMLElement | null>(null);
   const inView = useInView(ref, { margin: "-15% 0px -15% 0px" });
   const [playing, setPlaying] = useState(true);
-  const active = inView && playing;
-  // Auto-play studio ambience whenever the section is on screen.
+  const [pageVisible, setPageVisible] = useState(
+    typeof document !== "undefined" ? document.visibilityState === "visible" : true
+  );
+  useEffect(() => {
+    const onVis = () => setPageVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("blur", () => setPageVisible(false));
+    window.addEventListener("focus", () => setPageVisible(document.visibilityState === "visible"));
+    return () => {
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
+  const active = inView && playing && pageVisible;
+  // Auto-play studio ambience whenever the section is on screen and tab is active.
   const sfx = useSfx(active);
 
   // On first user gesture (required by browsers), resume any suspended audio ctx.
