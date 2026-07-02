@@ -24,6 +24,11 @@ const categories = [
 
 export function Portfolio() {
   const [filter, setFilter] = useState("All");
+  const [shot, setShot] = useState(0);
+  useEffect(() => {
+    const id = window.setInterval(() => setShot((s) => (s + 1) % novaVisionShots.length), 3500);
+    return () => window.clearInterval(id);
+  }, []);
   const visible =
     filter === "All" ? projects : projects.filter((p) => p.cat === filter);
 
