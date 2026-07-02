@@ -14,6 +14,49 @@ import {
   Building, Briefcase, Target, Megaphone,
 } from "lucide-react";
 import { SectionLabel } from "./About";
+import { useState } from "react";
+import { ServicePreviewModal, resolvePreview, type PreviewKind } from "./ServicePreviewModal";
+
+/* Explicit overrides matching the spec */
+const PREVIEW_OVERRIDES: Record<string, PreviewKind> = {
+  "AI Applications": "chatgpt",
+  "Android Apps": "facebook",
+  "iOS Apps": "appstore",
+  "Websites": "amazon",
+  "Cybersecurity": "cloudflare",
+  "Cloud Systems": "aws",
+  "Brand Identity": "figma",
+  "Luxury Logo Design": "figma",
+  "UI / UX Design": "figma",
+  "E-commerce": "shopify",
+  "Social Networks": "instagram",
+  "Messaging Apps": "instagram",
+  "Video Platforms": "netflix",
+  "Streaming Platforms": "netflix",
+  "News & Media Apps": "netflix",
+  "Restaurant Ordering": "ubereats",
+  "Taxi Apps": "uber",
+  "GPS Tracking": "uber",
+  "Healthcare Systems": "health",
+  "Fitness Apps": "health",
+  "FinTech Apps": "bank",
+  "Banking Apps": "bank",
+  "Subscription Billing": "bank",
+  "Payment Integration": "bank",
+  "Educational Apps": "duolingo",
+  "E-learning Platforms": "duolingo",
+  "School Management": "duolingo",
+  "Real Estate Apps": "zillow",
+  "Hotel Booking Systems": "airbnb",
+  "Booking Systems": "airbnb",
+  "Game Development": "gaming",
+  "Puzzle Games": "gaming",
+  "Rewards & Loyalty": "gaming",
+  "Music Apps": "spotify",
+  "Podcast Platforms": "spotify",
+  "Logistics Apps": "tracker",
+  "Shopping Apps": "shopify",
+};
 
 type Service = {
   icon: React.ComponentType<{ className?: string }>;
