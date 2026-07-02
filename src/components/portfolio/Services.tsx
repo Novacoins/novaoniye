@@ -150,6 +150,7 @@ const services: Service[] = [
 ];
 
 export function Services() {
+  const [active, setActive] = useState<PreviewKind | null>(null);
   return (
     <section id="services" className="relative py-24 lg:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -165,51 +166,56 @@ export function Services() {
             {services.length}+ Premium Services{" "}
             <span className="text-gold-gradient italic">Built for Scale</span>
           </h2>
-          <p className="mt-6 text-base text-foreground/80 md:text-lg">
+          <p className="mt-6 text-base text-foreground/85 md:text-lg">
             A complete catalog of world-class digital services — from AI and
-            mobile to cloud, cybersecurity and brand identity. Whatever your
-            business needs, Nova Studio delivers.
+            mobile to cloud, cybersecurity and brand identity. Tap any card to
+            preview a live app mockup.
           </p>
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {services.map((s, i) => (
-            <motion.div
+            <motion.button
               key={s.title}
-              initial={{ opacity: 0, y: 20 }}
+              type="button"
+              onClick={() => setActive(PREVIEW_OVERRIDES[s.title] ?? resolvePreview(s.title))}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4, delay: (i % 8) * 0.04 }}
-              whileHover={{ y: -6 }}
-              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-surface/60 p-6 backdrop-blur-xl transition-all hover:border-gold/50 hover:shadow-[0_20px_60px_-20px_rgba(255,215,0,0.35)]"
+              transition={{ duration: 0.35, delay: (i % 8) * 0.03 }}
+              whileHover={{ y: -4 }}
+              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-surface/60 p-6 text-left backdrop-blur-xl transition-colors hover:border-gold/50 hover:shadow-[0_20px_60px_-20px_rgba(255,215,0,0.35)]"
             >
               <div
                 className={`absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br ${s.accent.split(" text-")[0]} opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100`}
               />
               <div className="relative">
                 <div
-                  className={`inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br ${s.accent} transition-transform group-hover:scale-110 group-hover:rotate-3`}
+                  className={`inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br ${s.accent} transition-transform group-hover:scale-105`}
                 >
                   <s.icon className="h-5 w-5" />
                 </div>
                 <div className="mt-5 flex items-center gap-2">
-                  <span className="text-lg" aria-hidden>
-                    {s.emoji}
-                  </span>
+                  <span className="text-lg" aria-hidden>{s.emoji}</span>
                   <h3
                     className={`font-display text-lg font-semibold leading-tight ${s.accent.split("text-")[1] ? "text-" + s.accent.split("text-")[1] : "text-foreground"}`}
                   >
                     {s.title}
                   </h3>
                 </div>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/70">
+                <p className="mt-2 text-sm leading-relaxed text-foreground/80">
                   {s.desc}
                 </p>
+                <div className="mt-4 text-[11px] font-semibold uppercase tracking-wider text-gold/80">
+                  Tap to preview →
+                </div>
               </div>
-            </motion.div>
+            </motion.button>
           ))}
         </div>
       </div>
+
+      <ServicePreviewModal kind={active} onClose={() => setActive(null)} />
     </section>
   );
 }
