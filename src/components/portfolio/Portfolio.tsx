@@ -1,9 +1,18 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, Sparkles, Rocket, Globe, Download } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SectionLabel } from "./About";
 import { projects } from "./projects-data";
+import novaVisionIcon from "@/assets/nova-vision-icon.png";
+import nv1 from "@/assets/nova-vision-1.jpg";
+import nv2 from "@/assets/nova-vision-2.jpg";
+import nv3 from "@/assets/nova-vision-3.jpg";
+import nv4 from "@/assets/nova-vision-4.jpg";
+import nv5 from "@/assets/nova-vision-5.jpg";
+import nv6 from "@/assets/nova-vision-6.jpg";
+
+const novaVisionShots = [nv1, nv2, nv3, nv4, nv5, nv6];
 
 const categories = [
   "All",
