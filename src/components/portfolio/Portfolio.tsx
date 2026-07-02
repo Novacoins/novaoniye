@@ -56,48 +56,60 @@ export function Portfolio() {
         >
           <div className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-gold/15 blur-[100px]" />
           <div className="pointer-events-none absolute -left-24 bottom-0 h-[320px] w-[320px] rounded-full bg-violet-500/10 blur-[100px]" />
-          <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[conic-gradient(from_0deg,transparent,rgba(255,215,0,0.15),transparent_30%,transparent_70%,rgba(255,215,0,0.15),transparent)] opacity-40 animate-spin [animation-duration:20s]" />
 
           <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-gold/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.28em] text-gold backdrop-blur">
                 <Sparkles className="h-3.5 w-3.5" /> Coming Soon · Featured
               </div>
-              <h3 className="mt-5 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
-                Nova Vision <span className="text-gold-gradient italic">AI</span>
-              </h3>
-              <p className="mt-5 text-base leading-relaxed text-foreground/85 md:text-lg">
-                🤖 Nova Vision AI is our next-generation artificial intelligence
-                platform designed to provide intelligent 🖼️ image recognition,
-                🤖 AI-powered assistance, smart productivity tools, 📄 document
-                analysis, object detection, educational 🤖 AI, and business
-                automation. It combines powerful 🤖 AI technologies with a
-                premium user experience to help individuals and 💹 businesses
-                work faster, smarter, and more efficiently.
+
+              <div className="mt-6 flex items-center gap-4">
+                <img
+                  src={novaVisionIcon}
+                  alt="Nova Vision AI"
+                  className="h-16 w-16 rounded-2xl border border-gold/30 object-cover shadow-[0_10px_40px_-10px_rgba(255,215,0,0.5)] md:h-20 md:w-20"
+                />
+                <h3 className="font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+                  Nova Vision <span className="text-gold-gradient italic">AI</span>
+                </h3>
+              </div>
+
+              <p className="mt-6 text-lg font-medium text-foreground">
+                See smarter. Create faster. Work better.
+              </p>
+              <p className="mt-4 text-base leading-relaxed text-foreground/85 md:text-lg">
+                🤖 Nova Vision AI is an all-in-one intelligent assistant designed
+                to transform the way you work and learn. It combines advanced AI
+                technology with powerful visual recognition to deliver fast, 🚀
+                accurate, and intelligent results.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-6 grid grid-cols-1 gap-2 text-sm text-foreground/90 sm:grid-cols-2">
                 {[
-                  "Image Recognition",
-                  "Document Analysis",
-                  "AI Assistant",
-                  "Object Detection",
-                  "Educational AI",
-                  "Business Automation",
+                  "📷 Smart Camera Scanner",
+                  "🧠 AI Chat Assistant",
+                  "🖼️ Image Recognition",
+                  "📄 Document & Text Analysis",
+                  "🌍 Object & Scene Detection",
+                  "👤 Personalized User Profiles",
+                  "⚡ Lightning-Fast AI Responses",
                 ].map((t) => (
-                  <span
+                  <div
                     key={t}
-                    className="rounded-full border border-gold/25 bg-gold/5 px-3.5 py-1.5 text-xs font-medium text-foreground/90"
+                    className="rounded-lg border border-gold/20 bg-gold/5 px-3 py-2"
                   >
                     {t}
-                  </span>
+                  </div>
                 ))}
               </div>
+              <p className="mt-4 text-sm text-foreground/70">
+                🚀 More intelligent tools are continuously being added.
+              </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <button
                   disabled
-                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-sm font-semibold text-gold opacity-90"
+                  className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-6 py-3 text-sm font-semibold text-gold"
                 >
                   <Rocket className="h-4 w-4" /> Launching Soon
                 </button>
@@ -116,58 +128,33 @@ export function Portfolio() {
               </div>
             </div>
 
-            {/* Preview panel */}
+            {/* Screenshot preview */}
             <div className="relative">
-              <div className="relative aspect-square overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-[#0a0a0a] via-[#1a1408] to-[#0a0a0a] shadow-[0_30px_100px_-20px_rgba(255,215,0,0.35)]">
-                {/* Animated grid */}
-                <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,215,0,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,215,0,0.15)_1px,transparent_1px)] [background-size:32px_32px]" />
-                {/* Central AI orb */}
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1], rotate: [0, 6, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-                >
-                  <div className="relative flex h-48 w-48 items-center justify-center rounded-full bg-gradient-to-br from-gold via-[#ffe9a0] to-[#b8860b] shadow-[0_0_80px_rgba(255,215,0,0.6)] md:h-56 md:w-56">
-                    <div className="absolute inset-2 rounded-full bg-black/70 backdrop-blur-xl" />
-                    <Sparkles className="relative h-16 w-16 text-gold md:h-20 md:w-20" />
-                  </div>
-                </motion.div>
-                {/* Orbiting dots */}
-                {[0, 1, 2, 3].map((i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-gold shadow-[0_0_12px_rgba(255,215,0,0.8)]"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 10 + i * 3, repeat: Infinity, ease: "linear" }}
-                    style={{ transformOrigin: `${0} ${0}`, x: -4, y: -4 }}
-                  >
-                    <div
-                      style={{
-                        transform: `translate(${120 + i * 20}px, 0)`,
-                      }}
-                      className="h-2 w-2 rounded-full bg-gold"
-                    />
-                  </motion.div>
+              <div className="relative mx-auto aspect-[9/19] w-full max-w-[300px] overflow-hidden rounded-[2.2rem] border-[10px] border-black bg-black shadow-[0_30px_100px_-20px_rgba(255,215,0,0.4)]">
+                {novaVisionShots.map((src, idx) => (
+                  <img
+                    key={src}
+                    src={src}
+                    alt={`Nova Vision AI screenshot ${idx + 1}`}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+                    style={{ opacity: idx === shot ? 1 : 0 }}
+                  />
                 ))}
-                {/* Coming soon badge */}
-                <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-black/70 p-4 backdrop-blur-xl">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-gold">
-                        Nova Vision AI
-                      </div>
-                      <div className="mt-0.5 text-sm font-semibold text-white">
-                        Intelligent Vision Platform
-                      </div>
-                    </div>
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold" />
-                    </span>
-                  </div>
-                </div>
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-black/50 to-transparent" />
+              </div>
+              <div className="mt-4 flex justify-center gap-1.5">
+                {novaVisionShots.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setShot(idx)}
+                    aria-label={`Screenshot ${idx + 1}`}
+                    className={`h-1.5 rounded-full transition-all ${idx === shot ? "w-8 bg-gold" : "w-2 bg-white/25"}`}
+                  />
+                ))}
               </div>
             </div>
+
           </div>
         </motion.div>
 
