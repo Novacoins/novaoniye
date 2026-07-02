@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import logoUrl from "@/assets/nova-studio-logo.png";
 
 const links = [
   { href: "#home", label: "Home" },
@@ -33,7 +34,14 @@ export function Nav() {
             scrolled ? "glass-panel" : ""
           }`}
         >
-          <a href="#home" className="flex items-center gap-2">
+          <a href="#home" className="flex items-center gap-3">
+            <img
+              src={logoUrl}
+              alt="Nova Studio"
+              className="h-10 w-10 shrink-0 rounded-lg object-contain md:h-11 md:w-11"
+              loading="eager"
+              decoding="async"
+            />
             <span className="font-display text-2xl font-semibold tracking-tight text-foreground">
               Nova<span className="text-gold-gradient italic"> Studio</span>
             </span>
