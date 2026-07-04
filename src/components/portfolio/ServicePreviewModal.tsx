@@ -48,7 +48,7 @@ export interface PreviewService {
   desc: string;
   accent: string;
   emoji: string;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
 }
 
 const AUTO_CLOSE_MS = 9000;
