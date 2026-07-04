@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useMemo, useRef } from "react";
 import { X } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 
 /* ============================================================
    Per-service unique preview generator.
