@@ -15,48 +15,8 @@ import {
 } from "lucide-react";
 import { SectionLabel } from "./About";
 import { useState } from "react";
-import { ServicePreviewModal, resolvePreview, type PreviewKind } from "./ServicePreviewModal";
+import { ServicePreviewModal, type PreviewService } from "./ServicePreviewModal";
 
-/* Explicit overrides matching the spec */
-const PREVIEW_OVERRIDES: Record<string, PreviewKind> = {
-  "AI Applications": "chatgpt",
-  "Android Apps": "facebook",
-  "iOS Apps": "appstore",
-  "Websites": "amazon",
-  "Cybersecurity": "cloudflare",
-  "Cloud Systems": "aws",
-  "Brand Identity": "figma",
-  "Luxury Logo Design": "figma",
-  "UI / UX Design": "figma",
-  "E-commerce": "shopify",
-  "Social Networks": "instagram",
-  "Messaging Apps": "instagram",
-  "Video Platforms": "netflix",
-  "Streaming Platforms": "netflix",
-  "News & Media Apps": "netflix",
-  "Restaurant Ordering": "ubereats",
-  "Taxi Apps": "uber",
-  "GPS Tracking": "uber",
-  "Healthcare Systems": "health",
-  "Fitness Apps": "health",
-  "FinTech Apps": "bank",
-  "Banking Apps": "bank",
-  "Subscription Billing": "bank",
-  "Payment Integration": "bank",
-  "Educational Apps": "duolingo",
-  "E-learning Platforms": "duolingo",
-  "School Management": "duolingo",
-  "Real Estate Apps": "zillow",
-  "Hotel Booking Systems": "airbnb",
-  "Booking Systems": "airbnb",
-  "Game Development": "gaming",
-  "Puzzle Games": "gaming",
-  "Rewards & Loyalty": "gaming",
-  "Music Apps": "spotify",
-  "Podcast Platforms": "spotify",
-  "Logistics Apps": "tracker",
-  "Shopping Apps": "shopify",
-};
 
 type Service = {
   icon: React.ComponentType<{ className?: string }>;
@@ -150,7 +110,7 @@ const services: Service[] = [
 ];
 
 export function Services() {
-  const [active, setActive] = useState<PreviewKind | null>(null);
+  const [active, setActive] = useState<PreviewService | null>(null);
   return (
     <section id="services" className="relative py-24 lg:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -178,7 +138,7 @@ export function Services() {
             <motion.button
               key={s.title}
               type="button"
-              onClick={() => setActive(PREVIEW_OVERRIDES[s.title] ?? resolvePreview(s.title))}
+              onClick={() => setActive(s)}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -215,7 +175,7 @@ export function Services() {
         </div>
       </div>
 
-      <ServicePreviewModal kind={active} onClose={() => setActive(null)} />
+      <ServicePreviewModal service={active} onClose={() => setActive(null)} />
     </section>
   );
 }
