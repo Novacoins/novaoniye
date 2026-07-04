@@ -1616,7 +1616,7 @@ function FormTpl({ service, hue }: TplProps) {
 
 /* ================= Template picker ================= */
 
-const TEMPLATES: Record<TemplateKind, (p: TplProps) => JSX.Element> = {
+const TEMPLATES: Record<TemplateKind, (p: TplProps) => React.ReactElement> = {
   chat: ChatTpl,
   dashboard: DashboardTpl,
   feed: FeedTpl,
