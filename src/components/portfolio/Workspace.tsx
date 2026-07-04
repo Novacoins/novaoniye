@@ -623,9 +623,9 @@ export function Workspace() {
               </div>
             </div>
 
-            {/* equalizer + status (mobile-friendly row) */}
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
+            {/* premium studio status dashboard */}
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl">
                 <div className="flex items-center gap-3">
                   <div className="grid h-10 w-10 place-items-center rounded-lg bg-[hsl(45_90%_55%/0.2)]">
                     <Music2 className="h-4 w-4 text-[hsl(45_90%_70%)]" />
@@ -653,41 +653,74 @@ export function Workspace() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/55">
-                  Live Status
+              <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
+                    Nova Studio · Live Systems
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] font-medium text-emerald-300">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    </span>
+                    All systems operational
+                  </div>
                 </div>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+
+                <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-3 lg:grid-cols-4">
                   {[
-                    { k: "Editor", v: "VS Code" },
-                    { k: "Stack", v: "Flutter" },
-                    { k: "Branch", v: "main" },
-                    { k: "Uptime", v: "∞" },
-                  ].map((m) => (
-                    <div key={m.k} className="rounded-md border border-white/10 bg-black/40 p-2">
-                      <div className="text-white/50">{m.k}</div>
-                      <div className="font-medium text-white">{m.v}</div>
-                    </div>
+                    { k: "Editor", v: "VS Code", tone: "text-sky-300" },
+                    { k: "Language", v: "TypeScript", tone: "text-blue-300" },
+                    { k: "Framework", v: "Flutter · React · Next.js", tone: "text-cyan-300" },
+                    { k: "Backend", v: "Supabase · Node.js", tone: "text-emerald-300" },
+                    { k: "Database", v: "PostgreSQL", tone: "text-indigo-300" },
+                    { k: "Deployment", v: "Cloudflare", tone: "text-orange-300" },
+                    { k: "Git Branch", v: "production", tone: "text-purple-300" },
+                    { k: "Status", v: "Live", tone: "text-emerald-300" },
+                    { k: "Build", v: "Success", tone: "text-emerald-300" },
+                    { k: "Performance", v: "99.9%", tone: "text-lime-300" },
+                    { k: "Security", v: "Protected", tone: "text-rose-300" },
+                    { k: "Version", v: "v3.x", tone: "text-amber-300" },
+                  ].map((m, i) => (
+                    <motion.div
+                      key={m.k}
+                      initial={{ opacity: 0, y: 8 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.35, delay: (i % 6) * 0.04 }}
+                      className="group relative overflow-hidden rounded-lg border border-white/10 bg-black/40 p-2.5 transition-all hover:-translate-y-0.5 hover:border-[hsl(45_90%_55%/0.4)] hover:shadow-[0_10px_30px_-10px_hsl(45_90%_55%/0.5)]"
+                    >
+                      <div className="text-[9px] uppercase tracking-wider text-white/45">{m.k}</div>
+                      <div className={`mt-1 truncate font-semibold ${m.tone}`}>{m.v}</div>
+                      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[hsl(45_90%_60%/0.5)] to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                    </motion.div>
                   ))}
                 </div>
-              </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/55">
-                  Now Building
+                <div className="mt-4 flex items-center justify-between rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-[11px]">
+                  <div className="flex items-center gap-2 text-white/70">
+                    <span className="text-white/45">Last Deploy</span>
+                    <span className="font-medium text-white">Recently Updated</span>
+                  </div>
+                  <div className="hidden items-center gap-3 text-white/55 sm:flex">
+                    <span>ttfb 84ms</span>
+                    <span>·</span>
+                    <span>uptime 99.99%</span>
+                  </div>
                 </div>
-                <div className="mt-2 text-sm font-medium text-white">
-                  Premium mobile experiences
-                </div>
-                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-[hsl(45_90%_45%)] to-[hsl(45_90%_75%)]"
-                    animate={active ? { width: ["10%", "82%", "30%", "92%"] } : { width: "30%" }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                </div>
-                <div className="mt-2 text-[10px] text-white/50">
-                  Compiling · Bundling · Shipping
+
+                <div className="mt-3">
+                  <div className="flex items-center justify-between text-[10px] uppercase tracking-wider text-white/50">
+                    <span>Now Building</span>
+                    <span>Compiling · Bundling · Shipping</span>
+                  </div>
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/10">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-[hsl(45_90%_45%)] to-[hsl(45_90%_75%)]"
+                      animate={active ? { width: ["10%", "82%", "30%", "92%"] } : { width: "30%" }}
+                      transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
