@@ -110,7 +110,7 @@ const services: Service[] = [
 ];
 
 export function Services() {
-  const [active, setActive] = useState<PreviewKind | null>(null);
+  const [active, setActive] = useState<PreviewService | null>(null);
   return (
     <section id="services" className="relative py-24 lg:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -138,7 +138,7 @@ export function Services() {
             <motion.button
               key={s.title}
               type="button"
-              onClick={() => setActive(PREVIEW_OVERRIDES[s.title] ?? resolvePreview(s.title))}
+              onClick={() => setActive(s)}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
@@ -175,7 +175,7 @@ export function Services() {
         </div>
       </div>
 
-      <ServicePreviewModal kind={active} onClose={() => setActive(null)} />
+      <ServicePreviewModal service={active} onClose={() => setActive(null)} />
     </section>
   );
 }
