@@ -38,7 +38,7 @@ export function Portfolio() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SectionLabel>Selected Work</SectionLabel>
-            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+            <h2 className="mt-4 font-display text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl">
               Projects that move{" "}
               <span className="text-gold-gradient italic">businesses</span>{" "}
               forward.
