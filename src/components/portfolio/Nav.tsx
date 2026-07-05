@@ -38,13 +38,13 @@ export function Nav() {
             <img
               src={logoUrl}
               alt="Nova Studio"
-              width={80}
-              height={80}
-              className="h-14 w-14 shrink-0 rounded-xl object-contain drop-shadow-[0_4px_18px_rgba(212,175,55,0.35)] md:h-16 md:w-16"
+              width={96}
+              height={96}
+              className="h-16 w-16 shrink-0 rounded-xl object-contain drop-shadow-[0_4px_18px_rgba(212,175,55,0.35)] sm:h-[74px] sm:w-[74px] md:h-20 md:w-20"
               loading="eager"
               decoding="async"
             />
-            <span className="font-display text-2xl font-semibold tracking-tight text-foreground md:text-[1.7rem]">
+            <span className="font-display text-2xl font-semibold tracking-tight text-foreground md:text-[1.9rem]">
               Nova<span className="text-gold-gradient italic"> Studio</span>
             </span>
           </a>
