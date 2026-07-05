@@ -48,7 +48,7 @@ export function Testimonials() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SectionLabel>Kind Words</SectionLabel>
-            <h2 className="mt-4 font-display text-5xl leading-tight md:text-6xl lg:text-7xl">
+            <h2 className="mt-4 font-display text-[4rem] leading-[1.1] tracking-tight md:text-[5rem] lg:text-[6rem]">
               Trusted by founders &{" "}
               <span className="text-gold-gradient italic">teams</span>.
             </h2>

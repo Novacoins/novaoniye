@@ -122,7 +122,7 @@ export function Services() {
           <div className="flex justify-center">
             <SectionLabel>Our Services</SectionLabel>
           </div>
-          <h2 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
+          <h2 className="mt-5 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-white md:text-[5rem] lg:text-[6rem]">
             {services.length}+ Premium Services{" "}
             <span className="text-gold-gradient italic">Built for Scale</span>
           </h2>
