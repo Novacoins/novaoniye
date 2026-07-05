@@ -12,7 +12,7 @@ export function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-display text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl">
+            <h2 className="font-display text-[4rem] font-semibold leading-[1.1] tracking-tight text-white md:text-[5rem] lg:text-[6rem]">
               A premium digital studio with{" "}
               <span className="text-gold-gradient italic">5+ years</span> of
               craft.
