@@ -86,7 +86,7 @@ export function Contact() {
             viewport={{ once: true }}
           >
             <SectionLabel>Get in Touch</SectionLabel>
-            <h2 className="mt-5 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+            <h2 className="mt-5 font-display text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl">
               Let's build your{" "}
               <span className="text-gold-gradient italic">next</span> big idea.
             </h2>

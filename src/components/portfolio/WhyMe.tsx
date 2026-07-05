@@ -84,7 +84,7 @@ export function WhyMe() {
           <div className="flex justify-center">
             <SectionLabel>Why Choose Us</SectionLabel>
           </div>
-          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl">
             Premium results,{" "}
             <span className="text-gold-gradient italic">personal</span> attention.
           </h2>
@@ -208,7 +208,7 @@ export function FAQ() {
           <div className="flex justify-center">
             <SectionLabel>FAQ</SectionLabel>
           </div>
-          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white md:text-5xl lg:text-6xl">
+          <h2 className="mt-4 font-display text-5xl font-semibold leading-tight text-white md:text-6xl lg:text-7xl">
             Questions?{" "}
             <span className="text-gold-gradient italic">Answers.</span>
           </h2>
