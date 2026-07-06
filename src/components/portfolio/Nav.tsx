@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, User, Wrench, Briefcase, Star, Award, Phone } from "lucide-react";
 import logoUrl from "@/assets/nova-studio-logo.png";
 
 const links = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#services", label: "Services" },
-  { href: "#portfolio", label: "Projects" },
-  { href: "#testimonials", label: "Reviews" },
-  { href: "#certifications", label: "🏆 Certifications" },
-  { href: "#contact", label: "Contact" },
+  { href: "#home", label: "Home", Icon: Home },
+  { href: "#about", label: "About", Icon: User },
+  { href: "#services", label: "Services", Icon: Wrench },
+  { href: "#portfolio", label: "Projects", Icon: Briefcase },
+  { href: "#testimonials", label: "Reviews", Icon: Star },
+  { href: "#certifications", label: "Certifications", Icon: Award },
+  { href: "#contact", label: "Contact", Icon: Phone },
 ];
 
 export function Nav() {
