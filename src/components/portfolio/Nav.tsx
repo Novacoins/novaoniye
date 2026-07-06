@@ -94,31 +94,36 @@ export function Nav() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="lg:hidden"
+            className={`lg:hidden transition-all duration-300 ${
+              open
+                ? "text-red-500 drop-shadow-[0_0_10px_rgba(239,68,68,0.7)] hover:drop-shadow-[0_0_18px_rgba(239,68,68,1)]"
+                : "text-foreground"
+            }`}
             aria-label="Menu"
           >
-            {open ? <X /> : <Menu />}
+            {open ? <X className="h-8 w-8" strokeWidth={2.5} /> : <Menu className="h-7 w-7" />}
           </button>
         </div>
       </div>
 
       {open && (
         <div className="mx-6 mt-3 rounded-3xl glass-panel p-6 lg:hidden">
-          <nav className="flex flex-col gap-4">
-            {links.map((l) => (
+          <nav className="flex flex-col gap-1">
+            {links.map(({ href, label, Icon }) => (
               <a
-                key={l.href}
-                href={l.href}
+                key={href}
+                href={href}
                 onClick={() => setOpen(false)}
-                className="text-base font-medium text-foreground/90"
+                className="flex items-center gap-3 rounded-xl px-3 py-3 text-base font-medium text-foreground/90 transition-colors hover:bg-gold/10 hover:text-gold"
               >
-                {l.label}
+                <Icon className="h-5 w-5 text-gold drop-shadow-[0_0_6px_rgba(212,175,55,0.5)]" />
+                <span>{label}</span>
               </a>
             ))}
             <a
               href="#contact"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
+              className="mt-3 rounded-full bg-gold px-5 py-3 text-center text-sm font-semibold text-primary-foreground"
             >
               Hire Us
             </a>
