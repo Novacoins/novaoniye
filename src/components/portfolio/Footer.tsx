@@ -76,7 +76,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
+        <div className="mt-10 border-t border-border">
+          <RatingBadge />
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
           <div className="text-xs text-foreground/60">
             © {new Date().getFullYear()} Nova Studio. All rights reserved.
           </div>
