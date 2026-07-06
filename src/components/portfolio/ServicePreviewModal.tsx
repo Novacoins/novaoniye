@@ -233,8 +233,8 @@ function PhoneFrame({ children, hue }: { children: React.ReactNode; hue: number 
     <div
       className="relative shrink-0 overflow-hidden rounded-[2.4rem] border-[9px] border-neutral-900 bg-neutral-950"
       style={{
-        width: 300,
-        height: 600,
+        width: "min(340px, 92vw)",
+        height: "min(680px, 78vh)",
         boxShadow: `0 30px 90px -20px ${hsl(hue, 90, 55, 0.45)}`,
       }}
     >
@@ -256,9 +256,9 @@ function TabletFrame({ children, hue }: { children: React.ReactNode; hue: number
     <div
       className="relative shrink-0 overflow-hidden rounded-[1.8rem] border-[10px] border-neutral-900 bg-neutral-950"
       style={{
-        width: 460,
+        width: "min(460px, 92vw)",
         maxWidth: "94vw",
-        height: 620,
+        height: "min(620px, 78vh)",
         boxShadow: `0 30px 100px -20px ${hsl(hue, 90, 55, 0.4)}`,
       }}
     >
@@ -277,9 +277,8 @@ function LaptopFrame({ children, hue }: { children: React.ReactNode; hue: number
       <div
         className="relative overflow-hidden rounded-2xl border-[10px] border-neutral-900 bg-neutral-950"
         style={{
-          width: 720,
-          maxWidth: "94vw",
-          height: 440,
+          width: "min(720px, 92vw)",
+          height: "min(440px, 70vh)",
           boxShadow: `0 30px 90px -20px ${hsl(hue, 90, 55, 0.4)}`,
         }}
       >
@@ -305,9 +304,25 @@ function LaptopFrame({ children, hue }: { children: React.ReactNode; hue: number
   );
 }
 
+function useIsNarrow() {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const on = () => setNarrow(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return narrow;
+}
+
 function Frame({ device, hue, children }: { device: DeviceKind; hue: number; children: React.ReactNode }) {
-  if (device === "phone") return <PhoneFrame hue={hue}>{children}</PhoneFrame>;
-  if (device === "tablet") return <TabletFrame hue={hue}>{children}</TabletFrame>;
+  const narrow = useIsNarrow();
+  // On mobile, always present the preview as a real native-app phone frame
+  // (no browser chrome, no tablet chrome) — feels like an installed app.
+  const effective: DeviceKind = narrow ? "phone" : device;
+  if (effective === "phone") return <PhoneFrame hue={hue}>{children}</PhoneFrame>;
+  if (effective === "tablet") return <TabletFrame hue={hue}>{children}</TabletFrame>;
   return <LaptopFrame hue={hue}>{children}</LaptopFrame>;
 }
 
