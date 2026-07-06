@@ -59,6 +59,7 @@ function Index() {
       <FAQ />
       <Testimonials />
       <Contact />
+      <Certifications />
       <Footer />
       <FloatingActions />
     </main>
