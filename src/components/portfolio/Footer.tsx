@@ -1,3 +1,5 @@
+import { RatingBadge } from "./RatingBadge";
+
 export function Footer() {
   return (
     <footer className="relative border-t border-border py-14">
