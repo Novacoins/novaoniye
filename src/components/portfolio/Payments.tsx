@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { CreditCard, ShieldCheck, CheckCircle2, XCircle, Download, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
@@ -16,7 +16,7 @@ type PaystackPop = {
     lastname?: string;
     metadata?: Record<string, unknown>;
     channels?: string[];
-    callback: (res: { reference: string }) => void;
+    callback: (res: { reference?: string; trxref?: string; trans?: string }) => void;
     onClose: () => void;
   }) => { openIframe: () => void };
 };
@@ -64,6 +64,7 @@ type Receipt = {
 export function Payments() {
   const getKey = useServerFn(getPaystackPublicKey);
   const verify = useServerFn(verifyPaystackPayment);
+  const verifiedRefs = useRef(new Set<string>());
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -84,6 +85,43 @@ export function Payments() {
     };
   }, [getKey]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const returnedReference = params.get("reference") || params.get("trxref");
+    if (!returnedReference || verifiedRefs.current.has(returnedReference)) return;
+
+    verifiedRefs.current.add(returnedReference);
+    setStatus("verifying");
+    setErrorMsg(null);
+    void verify({ data: { reference: returnedReference } })
+      .then((result) => {
+        if (result.success) {
+          setReceipt({
+            reference: result.reference,
+            amount: result.amount,
+            currency: result.currency,
+            channel: result.channel,
+            paidAt: result.paidAt,
+            email: result.email,
+            customerName: result.customerName,
+          });
+          setStatus("success");
+          window.history.replaceState({}, "", `${window.location.pathname}#payments`);
+        } else {
+          verifiedRefs.current.delete(returnedReference);
+          setErrorMsg(result.message || "Payment failed verification. Please confirm the transaction and try again.");
+          setStatus("error");
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        verifiedRefs.current.delete(returnedReference);
+        setErrorMsg("Verification is taking longer than expected. Please try again with your payment reference.");
+        setStatus("error");
+      });
+  }, [verify]);
+
   const handlePay = async () => {
     setErrorMsg(null);
     const amountNum = Number(amount);
@@ -103,18 +141,39 @@ export function Payments() {
     try {
       setStatus("loading");
       const Paystack = await loadPaystack();
+      const txRef = `NS-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`.toUpperCase();
       const handler = Paystack.setup({
         key: publicKey,
         email,
         amount: Math.round(amountNum * 100), // NGN → kobo
         currency: "NGN",
+        ref: txRef,
         firstname: name || undefined,
-        metadata: { source: "Nova Studio Portfolio", customer_name: name || null },
+        metadata: {
+          source: "Nova Studio Portfolio",
+          customer_name: name || null,
+          custom_fields: [
+            {
+              display_name: "Nova Studio Customer",
+              variable_name: "customer_name",
+              value: name || "Guest",
+            },
+          ],
+        },
         callback: (res) => {
+          const reference = res.reference || res.trxref || res.trans;
+          if (!reference) {
+            setErrorMsg("Payment reference was not returned. Please try again or contact support.");
+            setStatus("error");
+            return;
+          }
+          if (verifiedRefs.current.has(reference)) return;
+          verifiedRefs.current.add(reference);
           void (async () => {
             try {
               setStatus("verifying");
-              const result = await verify({ data: { reference: res.reference } });
+              setErrorMsg(null);
+              const result = await verify({ data: { reference } });
               if (result.success) {
                 setReceipt({
                   reference: result.reference,
@@ -127,12 +186,14 @@ export function Payments() {
                 });
                 setStatus("success");
               } else {
+                verifiedRefs.current.delete(reference);
                 setErrorMsg(result.message || "Payment could not be verified.");
                 setStatus("error");
               }
             } catch (e) {
               console.error(e);
-              setErrorMsg("We could not verify your payment. Please contact support with your reference.");
+              verifiedRefs.current.delete(reference);
+              setErrorMsg("Verification is taking longer than expected. Please try again with your payment reference.");
               setStatus("error");
             }
           })();
@@ -153,6 +214,13 @@ export function Payments() {
     setStatus("idle");
     setErrorMsg(null);
     setReceipt(null);
+  };
+
+  const returnHome = () => {
+    reset();
+    if (typeof document !== "undefined") {
+      document.getElementById("home")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
   const downloadReceipt = () => {
@@ -209,7 +277,7 @@ export function Payments() {
           className="mt-12 rounded-3xl glass-panel p-8 md:p-10"
         >
           {status === "success" && receipt ? (
-            <SuccessView receipt={receipt} onDownload={downloadReceipt} onReset={reset} />
+            <SuccessView receipt={receipt} onDownload={downloadReceipt} onHome={returnHome} />
           ) : (
             <div className="grid gap-5">
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -279,28 +347,36 @@ export function Payments() {
 function SuccessView({
   receipt,
   onDownload,
-  onReset,
+  onHome,
 }: {
   receipt: Receipt;
   onDownload: () => void;
-  onReset: () => void;
+  onHome: () => void;
 }) {
   const dt = receipt.paidAt ? new Date(receipt.paidAt) : new Date();
   const receiptNo = `NS-${receipt.reference.slice(-8).toUpperCase()}`;
   return (
     <div className="text-center">
-      <div className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400">
+      <motion.div
+        initial={{ scale: 0.72, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 180, damping: 14 }}
+        className="mx-auto inline-flex h-20 w-20 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-500/15 text-emerald-400 shadow-[0_0_40px_-12px_rgba(52,211,153,0.9)]"
+      >
         <CheckCircle2 className="h-9 w-9" />
-      </div>
+      </motion.div>
       <h3 className="mt-5 font-display text-3xl font-semibold text-white md:text-4xl">
         Payment Successful
       </h3>
       <p className="mt-2 text-sm text-foreground/80">
-        Your payment has been received successfully. Thank you for choosing Nova Studio.
+        Thank you for choosing Nova Studio.
+      </p>
+      <p className="mt-1 text-sm text-foreground/80">
+        Your payment has been verified successfully.
       </p>
 
       <div className="mx-auto mt-8 max-w-md divide-y divide-white/10 rounded-2xl border border-border/60 bg-surface/40 text-left">
-        <Row k="Reference" v={receipt.reference} />
+        <Row k="Transaction Reference" v={receipt.reference} />
         <Row k="Receipt No." v={receiptNo} />
         <Row
           k="Amount Paid"
@@ -310,7 +386,7 @@ function SuccessView({
           })}
         />
         <Row k="Payment Method" v={receipt.channel} />
-        <Row k="Date & Time" v={dt.toLocaleString()} />
+        <Row k="Payment Date" v={dt.toLocaleString()} />
         <Row k="Status" v="SUCCESS" accent />
       </div>
 
@@ -322,10 +398,10 @@ function SuccessView({
           <Download className="h-4 w-4" /> Download Receipt
         </button>
         <button
-          onClick={onReset}
+          onClick={onHome}
           className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-surface-elevated"
         >
-          Return to Dashboard
+          Return to Homepage
         </button>
       </div>
     </div>

@@ -21,41 +21,52 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
     const secret = process.env.PAYSTACK_SECRET_KEY;
     if (!secret) throw new Error("PAYSTACK_SECRET_KEY is not configured");
 
-    const res = await fetch(
-      `https://api.paystack.co/transaction/verify/${encodeURIComponent(data.reference)}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${secret}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(`Paystack verification failed (${res.status}): ${text}`);
-    }
-
-    const body = (await res.json()) as {
+    let body: {
       status: boolean;
       message: string;
-      data: {
+      data?: {
         reference: string;
         status: string;
         amount: number;
         currency: string;
-        channel: string;
+        channel: string | null;
         paid_at: string | null;
         gateway_response: string;
         customer: { email: string; first_name?: string | null; last_name?: string | null };
       };
-    };
+    } | null = null;
+    let lastError = "";
 
-    if (!body.status || !body.data || body.data.status !== "success") {
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
+      const res = await fetch(
+        `https://api.paystack.co/transaction/verify/${encodeURIComponent(data.reference)}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${secret}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (res.ok) {
+        body = (await res.json()) as typeof body;
+        if (body?.status && body.data?.status === "success") break;
+        lastError = body?.data?.gateway_response || body?.message || "Payment not successful";
+      } else {
+        const text = await res.text().catch(() => "");
+        lastError = `Payment verification service returned ${res.status}${text ? `: ${text}` : ""}`;
+      }
+
+      if (attempt < 5) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 900));
+      }
+    }
+
+    if (!body?.status || !body.data || body.data.status !== "success") {
       return {
         success: false as const,
-        message: body?.data?.gateway_response || body?.message || "Payment not successful",
+        message: lastError || "Payment failed verification. Please confirm the transaction and try again.",
       };
     }
 
@@ -66,7 +77,7 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
     // Persist (dedup by reference)
     try {
       const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-      await supabaseAdmin
+      const { error } = await supabaseAdmin
         .from("payments")
         .upsert(
           {
@@ -83,6 +94,7 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
           },
           { onConflict: "reference" },
         );
+      if (error) console.error("[paystack] failed to save payment", error);
     } catch (err) {
       console.error("[paystack] failed to save payment", err);
     }

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowUpRight, Sparkles, Star } from "lucide-react";
+import { ArrowUpRight, CreditCard, Sparkles, Star } from "lucide-react";
 
 const HERO_TITLE = "Professional Mobile App & Web Developer";
 const HERO_SUB =
@@ -73,6 +73,15 @@ export function Hero() {
             <Star className="h-4 w-4 fill-current" />
             Our Services
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+          </a>
+          <a
+            href="#payments"
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-gold/40 bg-surface/45 px-8 py-4 text-sm font-semibold text-gold shadow-[0_0_0_1px_rgba(212,175,55,0.12),0_18px_48px_-26px_rgba(212,175,55,0.85)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-gold/70 hover:bg-gold/10 hover:shadow-[0_0_0_1px_rgba(212,175,55,0.28),0_24px_60px_-24px_rgba(212,175,55,1)]"
+          >
+            <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-gold/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <CreditCard className="relative h-4 w-4" />
+            <span className="relative">Pay Now</span>
+            <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:rotate-45" />
           </a>
         </motion.div>
 
