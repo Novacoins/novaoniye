@@ -1,6 +1,20 @@
 import { createServerFn } from "@tanstack/react-start";
 
 type VerifyInput = { reference: string };
+type PaystackVerifyResponse = {
+  status: boolean;
+  message: string;
+  data?: {
+    reference: string;
+    status: string;
+    amount: number;
+    currency: string;
+    channel: string | null;
+    paid_at: string | null;
+    gateway_response: string;
+    customer: { email: string; first_name?: string | null; last_name?: string | null };
+  };
+};
 
 export const getPaystackPublicKey = createServerFn({ method: "GET" }).handler(
   async () => {
@@ -21,20 +35,7 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
     const secret = process.env.PAYSTACK_SECRET_KEY;
     if (!secret) throw new Error("PAYSTACK_SECRET_KEY is not configured");
 
-    let body: {
-      status: boolean;
-      message: string;
-      data?: {
-        reference: string;
-        status: string;
-        amount: number;
-        currency: string;
-        channel: string | null;
-        paid_at: string | null;
-        gateway_response: string;
-        customer: { email: string; first_name?: string | null; last_name?: string | null };
-      };
-    } | null = null;
+    let body: PaystackVerifyResponse | null = null;
     let lastError = "";
 
     for (let attempt = 1; attempt <= 5; attempt += 1) {
@@ -50,7 +51,7 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
       );
 
       if (res.ok) {
-        body = (await res.json()) as typeof body;
+        body = (await res.json()) as PaystackVerifyResponse;
         if (body?.status && body.data?.status === "success") break;
         lastError = body?.data?.gateway_response || body?.message || "Payment not successful";
       } else {
