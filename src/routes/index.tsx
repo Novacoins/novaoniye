@@ -60,6 +60,7 @@ function Index() {
       <FAQ />
       <Testimonials />
       <Contact />
+      <Payments />
       <Certifications />
       <Footer />
       <FloatingActions />
