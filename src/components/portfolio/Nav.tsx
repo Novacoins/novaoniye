@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Menu, X, Home, User, Wrench, Briefcase, Star, Award, Phone } from "lucide-react";
+import { Menu, X, Home, User, Wrench, Briefcase, Star, Award, Phone, CreditCard } from "lucide-react";
 import logoUrl from "@/assets/nova-studio-logo.png";
 
 const links = [
@@ -9,6 +9,7 @@ const links = [
   { href: "#portfolio", label: "Projects", Icon: Briefcase },
   { href: "#testimonials", label: "Reviews", Icon: Star },
   { href: "#certifications", label: "Certifications", Icon: Award },
+  { href: "#payments", label: "Payments", Icon: CreditCard },
   { href: "#contact", label: "Contact", Icon: Phone },
 ];
 
