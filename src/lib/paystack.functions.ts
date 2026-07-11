@@ -79,7 +79,7 @@ export const verifyPaystackPayment = createServerFn({ method: "POST" })
             channel: d.channel,
             paid_at: d.paid_at,
             gateway_response: d.gateway_response,
-            raw: d as unknown as Record<string, unknown>,
+            raw: JSON.parse(JSON.stringify(d)),
           },
           { onConflict: "reference" },
         );
