@@ -14,6 +14,7 @@ type PaystackPop = {
     ref?: string;
     firstname?: string;
     lastname?: string;
+    callback_url?: string;
     metadata?: Record<string, unknown>;
     channels?: string[];
     callback: (res: { reference?: string; trxref?: string; trans?: string }) => void;
@@ -148,6 +149,10 @@ export function Payments() {
         amount: Math.round(amountNum * 100), // NGN → kobo
         currency: "NGN",
         ref: txRef,
+        callback_url:
+          typeof window !== "undefined"
+            ? `${window.location.origin}${window.location.pathname}?reference=${encodeURIComponent(txRef)}#payments`
+            : undefined,
         firstname: name || undefined,
         metadata: {
           source: "Nova Studio Portfolio",
