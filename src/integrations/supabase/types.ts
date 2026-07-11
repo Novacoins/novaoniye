@@ -14,7 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payments: {
+        Row: {
+          amount_kobo: number
+          channel: string | null
+          created_at: string
+          currency: string
+          customer_name: string | null
+          email: string
+          gateway_response: string | null
+          id: string
+          paid_at: string | null
+          raw: Json | null
+          reference: string
+          status: string
+        }
+        Insert: {
+          amount_kobo: number
+          channel?: string | null
+          created_at?: string
+          currency?: string
+          customer_name?: string | null
+          email: string
+          gateway_response?: string | null
+          id?: string
+          paid_at?: string | null
+          raw?: Json | null
+          reference: string
+          status: string
+        }
+        Update: {
+          amount_kobo?: number
+          channel?: string | null
+          created_at?: string
+          currency?: string
+          customer_name?: string | null
+          email?: string
+          gateway_response?: string | null
+          id?: string
+          paid_at?: string | null
+          raw?: Json | null
+          reference?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
